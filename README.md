@@ -7,3 +7,4 @@ Schema and interactions for the central database entity related to the Fedora Ba
 ## Read more
 
 1. https://fedora-arc.readthedocs.io/en/latest/badges/prop_rewrite_entities.html#internal-entities
+2. [Tahrir Database](/TAHRIR.md)

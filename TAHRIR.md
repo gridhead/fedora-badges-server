@@ -28,7 +28,7 @@ The database is known as `tahrir`.
 (10 rows)
 ```
 
-### `alembic_version`
+### Relation - `alembic_version`
 
 #### Metadata
 
@@ -50,7 +50,7 @@ The database is known as `tahrir`.
 Access method: heap
 ```
 
-### `assertions`
+### Relation - `assertions`
 
 #### Metadata
 
@@ -83,7 +83,7 @@ Foreign-key constraints:
 Access method: heap
 ```
 
-### `authorizations`
+### Relation - `authorizations`
 
 #### Metadata
 
@@ -112,7 +112,7 @@ Foreign-key constraints:
 Access method: heap
 ```
 
-### `badges`
+### Relation - `badges`
 
 #### Metadata
 
@@ -152,7 +152,7 @@ Referenced by:
 Access method: heap
 ```
 
-### `invitations`
+### Relation - `invitations`
 
 #### Metadata
 
@@ -183,7 +183,7 @@ Foreign-key constraints:
 Access method: heap
 ```
 
-### `issuers`
+### Relation - `issuers`
 
 #### Metadata
 
@@ -215,7 +215,7 @@ Referenced by:
 Access method: heap
 ```
 
-### `milestone`
+### Relation - `milestone`
 
 #### Metadata
 
@@ -246,7 +246,7 @@ Foreign-key constraints:
 Access method: heap
 ```
 
-### `persons`
+### Relation - `persons`
 
 #### Metadata
 
@@ -284,7 +284,7 @@ Referenced by:
 Access method: heap
 ```
 
-### `series`
+### Relation - `series`
 
 #### Metadata
 
@@ -319,7 +319,7 @@ Referenced by:
 Access method: heap
 ```
 
-### `team`
+### Relation - `team`
 
 #### Metadata
 
