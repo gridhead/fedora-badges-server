@@ -28,9 +28,9 @@ The database is known as `tahrir`.
 (10 rows)
 ```
 
-More information about the relations can be found [here](https://gitlab.com/fedora/websites-apps/fedora-badges/database-models/-/blob/main/legacydb/TABLES.md).
+More information about the relations can be found [here](https://gitlab.com/fedora/websites-apps/fedora-badges/database-models/-/blob/main/docs/TABLES.md).
 
-Related entity relationship diagram can be found [here](https://gitlab.com/fedora/websites-apps/fedora-badges/database-models/-/blob/main/legacydb/ERDIAG.md).
+Related entity relationship diagram can be found [here](https://gitlab.com/fedora/websites-apps/fedora-badges/database-models/-/blob/main/docs/TRDIAG.md).
 
 ## Experimentation
 
