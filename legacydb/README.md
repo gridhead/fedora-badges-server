@@ -30,6 +30,8 @@ The database is known as `tahrir`.
 
 More information about the relations can be found [here](https://gitlab.com/fedora/websites-apps/fedora-badges/database-models/-/blob/main/legacydb/TABLES.md).
 
+Related entity relationship diagram can be found [here](https://gitlab.com/fedora/websites-apps/fedora-badges/database-models/-/blob/main/legacydb/ERDIAG.md).
+
 ## Experimentation
 
 If the members want to take the database for a spin by themselves, a snapshot 
