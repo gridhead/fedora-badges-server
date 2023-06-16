@@ -1,36 +1,8 @@
-# Tahrir Database
+# Relations available
 
-## Database name
+## Relation - `alembic_version`
 
-The database is known as `tahrir`.
-
-## Users availables
-
-1. Role `tahrir` with CRUD access
-2. Role `tahrir-readonly` with R access
-
-## Relations available
-
-```
-             List of relations
- Schema |      Name       | Type  | Owner  
---------+-----------------+-------+--------
- public | alembic_version | table | tahrir
- public | assertions      | table | tahrir
- public | authorizations  | table | tahrir
- public | badges          | table | tahrir
- public | invitations     | table | tahrir
- public | issuers         | table | tahrir
- public | milestone       | table | tahrir
- public | persons         | table | tahrir
- public | series          | table | tahrir
- public | team            | table | tahrir
-(10 rows)
-```
-
-### Relation - `alembic_version`
-
-#### Metadata
+### Metadata
 
 ```
                                          List of relations
@@ -40,7 +12,7 @@ The database is known as `tahrir`.
 (1 row)
 ```
 
-#### Columns
+### Columns
 
 ```
                                                Table "public.alembic_version"
@@ -50,9 +22,9 @@ The database is known as `tahrir`.
 Access method: heap
 ```
 
-### Relation - `assertions`
+## Relation - `assertions`
 
-#### Metadata
+### Metadata
 
 ```
                                     List of relations
@@ -62,7 +34,7 @@ Access method: heap
 (1 row)
 ```
 
-#### Columns
+### Columns
 
 ```
                                                     Table "public.assertions"
@@ -83,9 +55,9 @@ Foreign-key constraints:
 Access method: heap
 ```
 
-### Relation - `authorizations`
+## Relation - `authorizations`
 
-#### Metadata
+### Metadata
 
 ```
                                       List of relations
@@ -95,7 +67,7 @@ Access method: heap
 (1 row)
 ```
 
-#### Columns
+### Columns
 
 ```
                                                                 Table "public.authorizations"
@@ -112,9 +84,9 @@ Foreign-key constraints:
 Access method: heap
 ```
 
-### Relation - `badges`
+## Relation - `badges`
 
-#### Metadata
+### Metadata
 
 ```
                                    List of relations
@@ -124,7 +96,7 @@ Access method: heap
 (1 row)
 ```
 
-#### Columns
+### Columns
 
 ```
                                                       Table "public.badges"
@@ -152,9 +124,9 @@ Referenced by:
 Access method: heap
 ```
 
-### Relation - `invitations`
+## Relation - `invitations`
 
-#### Metadata
+### Metadata
 
 ```
                                      List of relations
@@ -164,7 +136,7 @@ Access method: heap
 (1 row)
 ```
 
-#### Columns
+### Columns
 
 ```
                                                    Table "public.invitations"
@@ -183,9 +155,9 @@ Foreign-key constraints:
 Access method: heap
 ```
 
-### Relation - `issuers`
+## Relation - `issuers`
 
-#### Metadata
+### Metadata
 
 ```
                                    List of relations
@@ -195,7 +167,7 @@ Access method: heap
 (1 row)
 ```
 
-#### Columns
+### Columns
 
 ```
                                                                    Table "public.issuers"
@@ -215,9 +187,9 @@ Referenced by:
 Access method: heap
 ```
 
-### Relation - `milestone`
+## Relation - `milestone`
 
-#### Metadata
+### Metadata
 
 ```
                                      List of relations
@@ -227,7 +199,7 @@ Access method: heap
 (1 row)
 ```
 
-#### Columns
+### Columns
 
 ```
                                                                 Table "public.milestone"
@@ -246,9 +218,9 @@ Foreign-key constraints:
 Access method: heap
 ```
 
-### Relation - `persons`
+## Relation - `persons`
 
-#### Metadata
+### Metadata
 
 ```
                                     List of relations
@@ -258,7 +230,7 @@ Access method: heap
 (1 row)
 ```
 
-#### Columns
+### Columns
 
 ```
                                                                    Table "public.persons"
@@ -284,9 +256,9 @@ Referenced by:
 Access method: heap
 ```
 
-### Relation - `series`
+## Relation - `series`
 
-#### Metadata
+### Metadata
 
 ```
                                      List of relations
@@ -296,7 +268,7 @@ Access method: heap
 (1 row)
 ```
 
-#### Columns
+### Columns
 
 ```
                                                        Table "public.series"
@@ -319,9 +291,9 @@ Referenced by:
 Access method: heap
 ```
 
-### Relation - `team`
+## Relation - `team`
 
-#### Metadata
+### Metadata
 
 ```
                                     List of relations
@@ -331,7 +303,7 @@ Access method: heap
 (1 row)
 ```
 
-#### Columns
+### Columns
 
 ```
                                                        Table "public.team"
