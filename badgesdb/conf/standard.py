@@ -1,5 +1,17 @@
+# Reference
+# https://github.com/CentOS/ansible-role-duffy/blob/master/defaults/main.yml
+
 # The location of the database
 database = ""
+
+# The database URL schema using synchronous processing
+jsyncurl = ""
+
+# The database URL schema using asynchronous processing
+asyncurl = ""
+
+# The port on which the database service is hosted
+dtbsport = "5432"
 
 # The username for the database user
 username = ""
@@ -13,7 +25,7 @@ logrconf = {
     "disable_existing_loggers": False,
     "formatters": {
         "standard": {
-            "format": "[FMTS] %(asctime)s [%(levelname)s] %(message)s",
+            "format": "[FBDB] %(asctime)s [%(levelname)s] %(message)s",
             "datefmt": "[%Y-%m-%d %I:%M:%S %z]",
         },
     },
