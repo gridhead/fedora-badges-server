@@ -1,7 +1,6 @@
 from alembic import context
-from sqlalchemy import URL, engine_from_config, pool
+from sqlalchemy import engine_from_config, pool
 
-from badgesdb.conf import standard
 from badgesdb.data import metadata
 
 confobjc = context.config
@@ -10,7 +9,6 @@ destmeta = metadata
 
 
 def run_migrations_offline():
-    print("b")
     """
     Run migrations in OFFLINE mode
 
@@ -21,9 +19,6 @@ def run_migrations_offline():
 
     Calls to context.execute() here emit the given string to the script output.
     """
-
-
-
     baselink = confobjc.get_main_option("sqlalchemy.url")
     context.configure(
         url=baselink,
@@ -37,7 +32,6 @@ def run_migrations_offline():
 
 
 def run_migrations_online():
-    print("c")
     """
     Run migrations in ONLINE mode
 

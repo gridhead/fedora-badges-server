@@ -13,19 +13,18 @@ class AlembicMigration:
         if not hasattr(self, "_config"):
             self._config = config.Config()
             self._config.set_main_option("script_location", migrpath)
-            print(self._config.get_main_option("script_location"))
             self._config.set_main_option(
                 "sqlalchemy.url",
-                str(
-                    URL.create(
-                        "postgresql+psycopg2",
-                        username=standard.username,
-                        password=standard.password,
-                        host=standard.jsyncurl,
-                        port=standard.dtbsport,
-                        database=standard.database,
-                    )
-                ),
+                URL.create(
+                    "postgresql+psycopg2",
+                    username=standard.username,
+                    password=standard.password,
+                    host=standard.jsyncurl,
+                    port=standard.dtbsport,
+                    database=standard.database,
+                )
+                .render_as_string(hide_password=False)
+                .replace("%", "%%"),
             )
         return self._config
 

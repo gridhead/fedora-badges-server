@@ -4,6 +4,8 @@ from pathlib import Path
 from alembic import command, config
 from sqlalchemy import URL, inspect
 
+# Import the database models here so that the classes are considered by metadata.create_all() below
+from badgesdb import objs  # noqa: F401
 from badgesdb.conf import logrdata, standard
 from badgesdb.data import make_sync_engine, metadata
 
@@ -30,15 +32,15 @@ def make_database():
         confobjc.set_main_option("script_location", migrpath)
         confobjc.set_main_option(
             "sqlalchemy.url",
-            str(
-                URL.create(
-                    "postgresql+psycopg2",
-                    username=standard.username,
-                    password=standard.password,
-                    host=standard.jsyncurl,
-                    port=standard.dtbsport,
-                    database=standard.database,
-                )
-            ),
+            URL.create(
+                "postgresql+psycopg2",
+                username=standard.username,
+                password=standard.password,
+                host=standard.jsyncurl,
+                port=standard.dtbsport,
+                database=standard.database,
+            )
+            .render_as_string(hide_password=False)
+            .replace("%", "%%"),
         )
         command.stamp(confobjc, "head")
