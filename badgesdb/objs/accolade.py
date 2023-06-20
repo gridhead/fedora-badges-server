@@ -1,9 +1,10 @@
 from sqlalchemy import BLOB, Column, ForeignKey, Integer, Time, UnicodeText
 
+from badgesdb.data import baseobjc
 from badgesdb.objs.type import Type
 
 
-class Accolade:
+class Accolade(baseobjc):
     __tablename__ = "accolade"
     id = Column(Integer, primary_key=True, nullable=False)
     name = Column(UnicodeText, unique=True, nullable=False)

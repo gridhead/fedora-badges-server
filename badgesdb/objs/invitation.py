@@ -1,10 +1,11 @@
 from sqlalchemy import Column, ForeignKey, Integer, Time
 
+from badgesdb.data import baseobjc
 from badgesdb.objs.accolade import Accolade
 from badgesdb.objs.user import User
 
 
-class Invitation:
+class Invitation(baseobjc):
     __tablename__ = "invitation"
     id = Column(Integer, primary_key=True, nullable=False)
     makedate = Column(Time, unique=False, nullable=False)

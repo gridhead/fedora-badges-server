@@ -1,7 +1,9 @@
 from sqlalchemy import Boolean, Column, Integer, Time, UnicodeText
 
+from badgesdb.data import baseobjc
 
-class User:
+
+class User(baseobjc):
     __tablename__ = "user"
     id = Column(Integer, primary_key=True, nullable=False)
     mailaddr = Column(UnicodeText, unique=False, nullable=False)
