@@ -17,7 +17,7 @@ from badgesdb.data.formatdb import make_database
 def main(conffile=None):
     if conffile:
         confdict = {}
-        with open(conffile, "r") as confobjc:
+        with open(conffile) as confobjc:
             exec(compile(confobjc.read(), conffile, "exec"), confdict)
         readconf(confdict)
 
