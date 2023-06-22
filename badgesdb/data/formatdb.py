@@ -9,7 +9,7 @@ from badgesdb import objs  # noqa: F401
 from badgesdb.conf import logrdata, standard
 from badgesdb.data import make_sync_engine, metadata
 
-migrpath = str(Path(str(Path(__file__).parent.parent), str("migr")))
+migrpath = str(Path(str(Path(__file__).parent.parent), "migr"))
 
 
 def make_database():

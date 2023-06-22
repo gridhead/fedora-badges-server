@@ -3,8 +3,8 @@ import sys
 
 from sqlalchemy import URL, MetaData, create_engine
 from sqlalchemy.engine import Engine
-from sqlalchemy.orm import declarative_base, sessionmaker
 from sqlalchemy.ext.asyncio import AsyncEngine, AsyncSession, create_async_engine
+from sqlalchemy.orm import declarative_base, sessionmaker
 
 from badgesdb.conf import logrdata, nameconv, standard
 
