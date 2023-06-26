@@ -1,7 +1,9 @@
-from badgesdb.data import make_sync_engine, syncsess_generate
+# from badgesdb.data import asynsess_generate
+from badgesdb import data
+from badgesdb.data import make_sync_engine
 
 
-class BadgesDBSync:
+class BadgesDB:
     def __init__(self, username, password, jsyncurl, dtbsport, database):
         self.username = username
         self.password = password
@@ -9,4 +11,4 @@ class BadgesDBSync:
         self.dtbspost = dtbsport
         self.database = database
         self.engnobjc = make_sync_engine(username, password, jsyncurl, dtbsport, database)
-        self.syncsess = syncsess_generate.configure(bind=self.engnobjc)
+        self.sessobjc = data.syncsess_generate.configure(bind=self.engnobjc)  # NEEDS ATTENTION
