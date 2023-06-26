@@ -22,7 +22,7 @@ class UserBase(BaseModel, ABC):
     rank: Optional[int]
 
 
-class UserCreate(UserBase, UserCreateableMixin):
+class UserCreate_Parameter(UserBase, UserCreateableMixin):
     """
     Expected parameter type for the function intr.user.create
     """
@@ -33,7 +33,23 @@ class UserCreate(UserBase, UserCreateableMixin):
     withdraw: Optional[bool]
 
 
-class UserPeruseSole(UserBase):
+class UserCreate_Return(UserBase):
+    """
+    Expected return type for the function intr.user.create
+    """
+
+    id: int
+
+
+class UserPeruseSole_Parameter(UserBase):
+    """
+    Expected parameter type for the function intr.user.peruse_sole
+    """
+
+    id: int
+
+
+class UserPeruseSole_Return(UserBase):
     """
     Expected return type for the function intr.user.peruse_sole
     """
@@ -48,15 +64,21 @@ class UserPeruseSole(UserBase):
     rank: int
 
 
-class UserPeruseMany(UserBase):
+class UserPeruseMany_Parameter(UserBase):
+    """
+    Expected parameter type for the function intr.user.peruse_many
+    """
+
+
+class UserPeruseMany_Return(UserBase):
     """
     Expected return type for the function intr.user.peruse_many
     """
 
-    file: List[UserPeruseSole]
+    file: List[UserPeruseSole_Return]
 
 
-class UserUpdate(UserBase):
+class UserUpdate_Parameter(UserBase):
     """
     Expected parameter type for the function intr.user.update
     """
@@ -64,9 +86,25 @@ class UserUpdate(UserBase):
     id: int
 
 
-class UserRemove(UserBase):
+class UserUpdate_Return(UserBase):
+    """
+    Expected return type for the function intr.user.update
+    """
+
+    id: int
+
+
+class UserRemove_Parameter(UserBase):
     """
     Expected parameter type for the function intr.user.remove
+    """
+
+    id: int
+
+
+class UserRemove_Return(UserBase):
+    """
+    Expected return type for the function intr.user.remove
     """
 
     id: int
