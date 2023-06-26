@@ -12,14 +12,14 @@ metadata = MetaData(naming_convention=nameconv)
 baseobjc = declarative_base(metadata=metadata)
 
 
-def make_sync_engine():
+def make_sync_engine(username, password, jsyncurl, dtbsport, database):
     engnloca = URL.create(
         "postgresql+psycopg2",
-        username=standard.username,
-        password=standard.password,
-        host=standard.jsyncurl,
-        port=standard.dtbsport,
-        database=standard.database,
+        username=username,
+        password=password,
+        host=jsyncurl,
+        port=dtbsport,
+        database=database,
     )
     try:
         engnobjc = create_engine(engnloca)
