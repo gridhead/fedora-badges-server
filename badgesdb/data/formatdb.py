@@ -14,13 +14,7 @@ migrpath = str(Path(str(Path(__file__).parent.parent), "migr"))
 
 def make_database():
     try:
-        engnobjc = make_sync_engine(
-            standard.username,
-            standard.password,
-            standard.jsyncurl,
-            standard.dtbsport,
-            standard.database,
-        )
+        engnobjc = make_sync_engine()
         insprslt = inspect(engnobjc)
         relation = sorted(indx for indx in metadata.tables if insprslt.has_table(indx))
         if relation:
