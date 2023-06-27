@@ -18,7 +18,7 @@ def make_sync_engine():
         username=standard.username,
         password=standard.password,
         host=standard.jsyncurl,
-        port=standarddtbsport,
+        port=standard.dtbsport,
         database=standard.database,
     )
     try:
