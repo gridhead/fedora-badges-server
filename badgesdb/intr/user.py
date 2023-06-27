@@ -3,9 +3,9 @@ from sqlalchemy.orm import selectinload
 
 from badgesdb.conf import logrdata
 from badgesdb.data import asynsess_generate
-from badgesdb.form.user import UserPeruseSole_Parameter
+from badgesdb.form.user import UserCreate_Parameter, UserPeruseSole_Parameter
 from badgesdb.intr import BadgesDB
-from badgesdb.objs.user import User
+from badgesdb.objs import User
 
 
 class IntrUser:
@@ -14,8 +14,35 @@ class IntrUser:
         self.sesclass = asynsess_generate
         self.sesclass.configure(bind=badgesdb.engnobjc)
 
-    def create(self):
-        pass
+    async def insert(self, objciden: UserCreate_Parameter):
+        """
+        Why sessobjc.commit() and why not sessobjc.flush() ?
+        https://stackoverflow.com/questions/4201455/sqlalchemy-whats-the-difference-between-flush-and-commit
+        """
+        try:
+            sessobjc = self.sesclass()
+            try:
+                datadict = {
+                    "mailaddr": objciden.mailaddr,
+                    "username": objciden.username,
+                    "desc": objciden.desc,
+                    "withdraw": objciden.withdraw,
+                }
+                dataobjc = User(**datadict)
+                sessobjc.add(dataobjc)
+                await sessobjc.commit()
+                return True
+            except Exception as expt:
+                await sessobjc.rollback()
+                logrdata.logrobjc.error(
+                    f"Could not insert the record into the relation {self.relaname} - {expt}"
+                )
+                return False
+        except Exception as expt:
+            logrdata.logrobjc.error(
+                f"Could not initialize a session with the relation {self.relaname} - {expt}"
+            )
+            return False
 
     async def peruse_sole(self, objciden: UserPeruseSole_Parameter):
         try:

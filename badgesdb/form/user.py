@@ -29,8 +29,8 @@ class UserCreate_Parameter(UserBase, UserCreateableMixin):
 
     mailaddr: str
     username: str
-    desc: Optional[str]
-    withdraw: Optional[bool]
+    desc: Optional[str] = None
+    withdraw: Optional[bool] = False
 
 
 class UserCreate_Return(UserBase):
