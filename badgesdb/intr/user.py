@@ -2,30 +2,27 @@ from sqlalchemy import select
 from sqlalchemy.orm import selectinload
 
 from badgesdb.conf import logrdata
+from badgesdb.data import asynsess_generate
 from badgesdb.form.user import UserPeruseSole_Parameter
 from badgesdb.intr import BadgesDB
 from badgesdb.objs.user import User
 
 
-class IntrUser(BadgesDB):
-    def __init__(self, username, password, jsyncurl, dtbsport, database):
-        super().__init__(
-            username=username,
-            password=password,
-            jsyncurl=jsyncurl,
-            dtbsport=dtbsport,
-            database=database,
-        )
+class IntrUser:
+    def __init__(self, badgesdb: BadgesDB):
         self.relaname = "USER"
+        self.sesclass = asynsess_generate
+        self.sesclass.configure(bind=badgesdb.engnobjc)
 
     def create(self):
         pass
 
     async def peruse_sole(self, objciden: UserPeruseSole_Parameter):
         try:
+            sessobjc = self.sesclass()
             quryobjc = select(User).filter_by(id=objciden.id).options(selectinload("*"))
-            rsltobjc = await self.sessobjc.execute(quryobjc)
-            await self.cleanall()
+            rsltobjc = await sessobjc.execute(quryobjc)
+            await sessobjc.close()
             return rsltobjc.scalar_one_or_none()
         except Exception as expt:
             logrdata.logrobjc.error(
