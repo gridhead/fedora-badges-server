@@ -2,8 +2,8 @@
 
 ## Diagram
 
-![](https://gitlab.com/fedora/websites-apps/fedora-badges/database-models/-/raw/main/docs/mdrn.png)
+![](https://gitlab.com/fedora/websites-apps/fedora-badges/accolades-api/-/raw/main/docs/mdrn.png)
 
 ## Assets
 
-The related files can be found [here](https://gitlab.com/fedora/websites-apps/fedora-badges/database-models/-/blob/main/docs/mdrn.drawio).
+The related files can be found [here](https://gitlab.com/fedora/websites-apps/fedora-badges/accolades-api/-/blob/main/docs/mdrn.drawio).

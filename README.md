@@ -1,13 +1,15 @@
-# Database Models
+# Accolades API
 
 ## About
 
-Schema and interactions for the central database entity related to the Fedora Badges system abstracted with libraries like SQLAlchemy, Alembic and Psycopg2.
+The backend service for the entire project and has direct interactions with its neighbouring internal entities (i.e. Collection, Database, Liberation, Messages Consumer, Accolades CLI)
+
+This now also includes the schema and interactions for the central database entity related to the Fedora Badges system abstracted with libraries like SQLAlchemy, Alembic and Psycopg2.
 
 ## Read more
 
-* [Tahrir Database](https://gitlab.com/fedora/websites-apps/fedora-badges/database-models/-/blob/main/docs/TAHRIR.md)
-* [Badges Database](https://gitlab.com/fedora/websites-apps/fedora-badges/database-models/-/blob/main/docs/BADGES.md)
+* [Tahrir Database](https://gitlab.com/fedora/websites-apps/fedora-badges/accolades-api/-/blob/main/docs/TAHRIR.md)
+* [Badges Database](https://gitlab.com/fedora/websites-apps/fedora-badges/accolades-api/-/blob/main/docs/BADGES.md)
 
 ## Contributing
 

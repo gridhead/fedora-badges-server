@@ -11,4 +11,4 @@ The database is known as `badges`.
 
 ## Relations available
 
-Related entity relationship diagram can be found [here](https://gitlab.com/fedora/websites-apps/fedora-badges/database-models/-/blob/main/docs/BGDIAG.md).
+Related entity relationship diagram can be found [here](https://gitlab.com/fedora/websites-apps/fedora-badges/accolades-api/-/blob/main/docs/BGDIAG.md).
