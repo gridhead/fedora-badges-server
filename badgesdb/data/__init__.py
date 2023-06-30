@@ -14,7 +14,7 @@ baseobjc = declarative_base(metadata=metadata)
 
 def make_sync_engine():
     engnloca = URL.create(
-        "postgresql+psycopg2",
+        drivername="postgresql+psycopg2",
         username=standard.username,
         password=standard.password,
         host=standard.jsyncurl,
@@ -32,7 +32,7 @@ def make_sync_engine():
 
 def make_async_engine():
     engnloca = URL.create(
-        "postgresql+asyncpg",
+        drivername="postgresql+asyncpg",
         username=standard.username,
         password=standard.password,
         host=standard.jsyncurl,
@@ -48,8 +48,8 @@ def make_async_engine():
     return engnobjc
 
 
-syncsess_generate = sessionmaker(class_=AsyncSession, expire_on_commit=False, future=True)
-asynsess_generate = sessionmaker(expire_on_commit=False, future=True)
+syncsess_generate = sessionmaker(expire_on_commit=False, future=True)
+asynsess_generate = sessionmaker(class_=AsyncSession, expire_on_commit=False, future=True)
 
 
 def init_sync_model(engnobjc: Engine = None):
