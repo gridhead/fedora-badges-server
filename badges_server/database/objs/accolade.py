@@ -1,8 +1,8 @@
 from sqlalchemy import Column, ForeignKey, Integer, UnicodeText
 
-from badgesdb.data import baseobjc
-from badgesdb.objs.type import Type
-from badgesdb.util import CreateableMixin
+from badges_server.database.data import baseobjc
+from badges_server.database.objs.type import Type
+from badges_server.util import CreateableMixin
 
 
 class Accolade(baseobjc, CreateableMixin):

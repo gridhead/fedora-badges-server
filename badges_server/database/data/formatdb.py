@@ -5,9 +5,8 @@ from alembic import command, config
 from sqlalchemy import URL, inspect
 
 # Import the database models here so that the classes are considered by metadata.create_all() below
-from badgesdb import objs  # noqa: F401
-from badgesdb.conf import logrdata, standard
-from badgesdb.data import make_sync_engine, metadata
+from badges_server.conf import logrdata, standard
+from badges_server.database.data import make_sync_engine, metadata
 
 migrpath = str(Path(str(Path(__file__).parent.parent), "migr"))
 

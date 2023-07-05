@@ -1,15 +1,15 @@
 from sqlalchemy import select
 from sqlalchemy.orm import selectinload
 
-from badgesdb.conf import logrdata
-from badgesdb.data import asynsess_generate
-from badgesdb.form.user import UserCreate_Parameter, UserPeruseSole_Parameter
-from badgesdb.intr import BadgesDB
-from badgesdb.objs import User
+from badges_server.conf import logrdata
+from badges_server.database.data import asynsess_generate
+from badges_server.database.form.user import UserCreate_Parameter, UserPeruseSole_Parameter
+from badges_server.database.intr import badgesdb
+from badges_server.database.objs import User
 
 
 class IntrUser:
-    def __init__(self, badgesdb: BadgesDB):
+    def __init__(self, badgesdb: badgesdb):
         self.relaname = "USER"
         self.sesclass = asynsess_generate
         self.sesclass.configure(bind=badgesdb.engnobjc)

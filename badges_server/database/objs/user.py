@@ -1,7 +1,7 @@
 from sqlalchemy import Boolean, Column, Integer, UnicodeText
 
-from badgesdb.data import baseobjc
-from badgesdb.util import TZDateTime, UserCreateableMixin
+from badges_server.database.data import baseobjc
+from badges_server.util import TZDateTime, UserCreateableMixin
 
 
 class User(baseobjc, UserCreateableMixin):

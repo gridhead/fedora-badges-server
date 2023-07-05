@@ -1,10 +1,10 @@
 import click
 
-from badgesdb import __vers__, readconf
-from badgesdb.data.formatdb import make_database
+from badges_server import __vers__, readconf
+from badges_server.database.data.formatdb import make_database
 
 
-@click.group(name="badgesdb")
+@click.group(name="badges_server")
 @click.option(
     "-c",
     "--conffile",
@@ -13,7 +13,7 @@ from badgesdb.data.formatdb import make_database
     help="Read configuration from the specified Python file",
     default=None,
 )
-@click.version_option(version=__vers__, prog_name="badgesdb")
+@click.version_option(version=__vers__, prog_name="badges_server")
 def main(conffile=None):
     if conffile:
         confdict = {}

@@ -1,6 +1,6 @@
 from sqlalchemy import Boolean, Column, Integer, UnicodeText
 
-from badgesdb.data import baseobjc
+from badges_server.database.data import baseobjc
 
 
 class Type(baseobjc):

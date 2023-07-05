@@ -3,8 +3,8 @@ from typing import Set
 from alembic import command, config, runtime, script
 from sqlalchemy import URL
 
-from badgesdb.conf import logrdata, standard
-from badgesdb.data.formatdb import migrpath
+from badges_server.conf import logrdata, standard
+from badges_server.database.data.formatdb import migrpath
 
 
 class AlembicMigration:
