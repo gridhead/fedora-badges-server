@@ -52,24 +52,15 @@ syncsess_generate = sessionmaker(expire_on_commit=False, future=True)
 asynsess_generate = sessionmaker(class_=AsyncSession, expire_on_commit=False, future=True)
 
 
-def init_sync_model(engnobjc: Engine = None):
-    if not engnobjc:
-        syncengn = make_sync_engine()
-        syncsess_generate.configure(bind=syncengn)
-    else:
-        logrdata.logrobjc.error("Could not instantiate a synchronous database session")
-        sys.exit(1)
+def init_sync_model(engnobjc: Engine):
+    syncengn = make_sync_engine()
+    syncsess_generate.configure(bind=syncengn)
+
+async def init_async_model(engnobjc: AsyncEngine):
+    asynengn = make_async_engine()
+    asynsess_generate.configure(bind=asynengn)
 
 
-async def init_async_model(engnobjc: AsyncEngine = None):
-    if not engnobjc:
-        asynengn = make_async_engine()
-        asynsess_generate.configure(bind=asynengn)
-    else:
-        logrdata.logrobjc.error("Could not instantiate an asynchronous database session")
-        sys.exit(1)
-
-
-def init_model(syncengn: Engine = None, asyneng: Engine = None):
+def init_model(syncengn: Engine, asyneng: Engine):
     init_sync_model(syncengn)
     asyncio.run(init_async_model(asyneng))

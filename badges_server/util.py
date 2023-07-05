@@ -3,7 +3,8 @@ import datetime
 from sqlalchemy import Column, Integer
 from sqlalchemy.ext.compiler import compiles
 from sqlalchemy.sql.expression import FunctionElement
-from sqlalchemy.types import DateTime, TypeDecorator
+from sqlalchemy.types import DateTime as sqlDateTime
+from sqlalchemy.types import TypeDecorator
 
 
 class TZDateTime(TypeDecorator):
@@ -12,7 +13,7 @@ class TZDateTime(TypeDecorator):
     https://docs.sqlalchemy.org/en/14/core/custom_types.html#store-timezone-aware-timestamps-as-timezone-naive-utc
     """
 
-    impl = DateTime
+    impl = sqlDateTime
     cache_ok = True
 
     def process_bind_param(self, value, dialect):
@@ -33,7 +34,7 @@ class utcnow(FunctionElement):
     Current timestamp in UTC for SQL expressions.
     """
 
-    type = DateTime
+    type = sqlDateTime
     inherit_cache = True
 
 
