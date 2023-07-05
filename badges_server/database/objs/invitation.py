@@ -1,9 +1,9 @@
 from sqlalchemy import Column, ForeignKey, Integer
 
-from badgesdb.data import baseobjc
-from badgesdb.objs.accolade import Accolade
-from badgesdb.objs.user import User
-from badgesdb.util import CreateableMixin, TZDateTime
+from badges_server.database.data import baseobjc
+from badges_server.database.objs.accolade import Accolade
+from badges_server.database.objs.user import User
+from badges_server.util import CreateableMixin, TZDateTime
 
 
 class Invitation(baseobjc, CreateableMixin):

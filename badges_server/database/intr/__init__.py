@@ -2,7 +2,7 @@ from sqlalchemy import URL
 from sqlalchemy.ext.asyncio import create_async_engine
 
 
-class BadgesDB:
+class badgesdb:
     def __init__(self, username, password, jsyncurl, dtbsport, database):
         self.username = username
         self.password = password

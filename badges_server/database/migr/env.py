@@ -1,7 +1,7 @@
 from alembic import context
 from sqlalchemy import engine_from_config, pool
 
-from badgesdb.data import metadata
+from badges_server.database.data import metadata
 
 confobjc = context.config
 

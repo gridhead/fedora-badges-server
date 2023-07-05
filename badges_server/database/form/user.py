@@ -4,7 +4,13 @@ from typing import List, Optional
 
 from pydantic import BaseModel
 
-from . import UserCreateableMixin
+
+class UserCreateableMixin(BaseModel):
+    """
+    Mixin for obtaining the current datetime
+    """
+
+    makedate: datetime
 
 
 class UserBase(BaseModel, ABC):

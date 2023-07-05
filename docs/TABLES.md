@@ -324,7 +324,7 @@ Access method: heap
 
 If the members want to take the database for a spin by themselves, a snapshot
 of the Tahrir database is made available in a selhosted community
-infrastructure at `badgesdb-main.apexaltruism.net:5432` with both the
+infrastructure at `badges_server-main.apexaltruism.net:5432` with both the
 aforementioned users with their respective access levels. The credentials of
 the users are mentioned below.
 
@@ -342,4 +342,4 @@ are mentioned below.
 
 | # | Username            | Password           | Access |
 |---|---------------------|--------------------|--------|
-| 1 | `badgesdb-readonly` | `l0v3f3d0r4b4d8e5` | R      |
+| 1 | `badges_server-readonly` | `l0v3f3d0r4b4d8e5` | R      |

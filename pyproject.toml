@@ -1,7 +1,7 @@
 [tool.poetry]
-name = "badgesdb"
+name = "badges-server"
 version = "0.1.0"
-description = "Schema and interactions for the central database entity related to the Fedora Badges system abstracted with libraries like SQLAlchemy, Alembic and Psycopg2"
+description = "The backend service for the entire project and has direct interactions with its neighbouring internal entities (i.e. Collection, Database, Liberation, Messages Consumer, Badges Client)"
 authors = ["Akashdeep Dhar <akashdeep.dhar@gmail.com>"]
 license = "GPL-3.0-or-later"
 maintainers = ["Akashdeep Dhar <akashdeep.dhar@gmail.com>"]
@@ -69,4 +69,4 @@ requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.poetry.scripts]
-badgesdb = "badgesdb.main:main"
+badges_server = "badges_server.main:main"
