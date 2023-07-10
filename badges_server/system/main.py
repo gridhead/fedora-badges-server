@@ -5,6 +5,7 @@ import uvicorn.config
 from badges_server.config import logrdata, standard
 
 from fastapi import FastAPI
+from badges_server.system.router import user
 
 from badges_server.database import data
 from badges_server import interactions
@@ -17,12 +18,12 @@ desc = "Fedora Badges Server"
 
 
 tags_metadata = [
-    {"name": "accolade", "description": "Operations on accolades"},
-    {"name": "granting", "description": "Operations on grantings"},
-    {"name": "invitation", "description": "Operations on invitation"},
-    {"name": "provider", "description": "Operations on providers"},
-    {"name": "type", "description": "Operations on types"},
-    {"name": "user", "description": "Operations on users"},
+    {"name": "accolades", "description": "Operations on accolades"},
+    {"name": "grantings", "description": "Operations on grantings"},
+    {"name": "invitations", "description": "Operations on invitation"},
+    {"name": "providers", "description": "Operations on providers"},
+    {"name": "types", "description": "Operations on types"},
+    {"name": "users", "description": "Operations on users"},
 ]
 
 app = FastAPI(
@@ -35,6 +36,8 @@ app = FastAPI(
 
 
 PREFIX = "/api/v1"
+
+app.include_router(user.router, prefix=PREFIX)
 
 
 def start_service():
