@@ -9,6 +9,6 @@ class User(baseobjc, UserCreateableMixin):
     id = Column(Integer, primary_key=True, nullable=False)
     mailaddr = Column(UnicodeText, unique=False, nullable=False)
     username = Column(UnicodeText, unique=True, nullable=False)
-    desc = Column(UnicodeText, unique=False, nullable=True, default=None)
+    description = Column(UnicodeText, unique=False, nullable=True, default=None)
     lastseen = Column(TZDateTime, unique=False, nullable=True, default=None)
     withdraw = Column(Boolean, unique=False, nullable=False, default=False)

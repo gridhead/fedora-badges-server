@@ -25,7 +25,7 @@ class IntrUser:
                 datadict = {
                     "mailaddr": objciden.mailaddr,
                     "username": objciden.username,
-                    "desc": objciden.desc,
+                    "description": objciden.description,
                     "withdraw": objciden.withdraw,
                 }
                 dataobjc = User(**datadict)
