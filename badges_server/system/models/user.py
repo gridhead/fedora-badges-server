@@ -55,7 +55,7 @@ class UserPeruseSole_Parameter(UserBase):
     id: int
 
 
-class UserPeruseSole_Return(UserBase):
+class SelectOne(UserBase):
     """
     Expected return type for the function intr.user.peruse_sole
     """
@@ -81,7 +81,7 @@ class UserPeruseMany_Return(UserBase):
     Expected return type for the function intr.user.peruse_many
     """
 
-    file: List[UserPeruseSole_Return]
+    file: List[SelectOne]
 
 
 class UserUpdate_Parameter(UserBase):
