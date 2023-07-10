@@ -1,15 +1,18 @@
 import copy
+import sys
 
 import uvicorn.config
 
 from badges_server.config import logrdata, standard
+from badges_server.database import data
+from badges_server.exceptions import BadgesServerException
 
 from fastapi import FastAPI
 from badges_server.system.router import user
 
 from badges_server.database import data
 from badges_server import interactions
-from badges_server.exceptions import BadgesServerException
+from badges_server.exceptions import BadgesServerConfigurationError
 
 from badges_server import __vers__
 
@@ -38,6 +41,16 @@ app = FastAPI(
 PREFIX = "/api/v1"
 
 app.include_router(user.router, prefix=PREFIX)
+
+
+@app.on_event("startup")
+async def init_model():
+    try:
+        data.init_sync_model()
+        await data.init_async_model()
+    except BadgesServerConfigurationError as expt:
+        logrdata.logrobjc.error("Configuration file needs attention")
+        sys.exit(1)
 
 
 def start_service():

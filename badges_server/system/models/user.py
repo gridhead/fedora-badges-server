@@ -3,6 +3,7 @@ from datetime import datetime
 from typing import List, Optional
 
 from pydantic import BaseModel
+from badges_server.system.common import APIResult
 
 
 class UserCreateableMixin(BaseModel):
@@ -55,7 +56,7 @@ class UserPeruseSole_Parameter(UserBase):
     id: int
 
 
-class SelectOne(UserBase):
+class UserPeruseSole_Return(UserBase):
     """
     Expected return type for the function intr.user.peruse_sole
     """
@@ -69,6 +70,9 @@ class SelectOne(UserBase):
     withdraw: bool
     rank: int
 
+class SelectOneResult(APIResult):
+    user: UserPeruseSole_Return
+
 
 class UserPeruseMany_Parameter(UserBase):
     """
@@ -81,7 +85,7 @@ class UserPeruseMany_Return(UserBase):
     Expected return type for the function intr.user.peruse_many
     """
 
-    file: List[SelectOne]
+    file: List[UserPeruseSole_Return]
 
 
 class UserUpdate_Parameter(UserBase):
