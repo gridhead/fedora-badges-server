@@ -14,5 +14,6 @@ def readconf(confobjc):
     standard.dtbsport = confobjc.get("dtbsport", standard.dtbsport)
     standard.username = confobjc.get("username", standard.username)
     standard.password = confobjc.get("password", standard.password)
+    standard.wsgiconf = confobjc.get("wsgiconf", standard.wsgiconf)
     dictConfig(standard.logrconf)
     logrdata.logrobjc = getLogger(__name__)
