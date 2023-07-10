@@ -6,7 +6,7 @@ from sqlalchemy.engine import Engine
 from sqlalchemy.ext.asyncio import AsyncEngine, AsyncSession, create_async_engine
 from sqlalchemy.orm import declarative_base, sessionmaker
 
-from badges_server.conf import logrdata, nameconv, standard
+from badges_server.config import logrdata, nameconv, standard
 
 metadata = MetaData(naming_convention=nameconv)
 baseobjc = declarative_base(metadata=metadata)

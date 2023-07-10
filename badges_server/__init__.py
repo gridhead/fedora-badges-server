@@ -2,7 +2,7 @@ from importlib import metadata
 from logging import getLogger
 from logging.config import dictConfig
 
-from badges_server.conf import logrdata, standard
+from badges_server.config import logrdata, standard
 
 __vers__ = metadata.version("badges_server")
 
