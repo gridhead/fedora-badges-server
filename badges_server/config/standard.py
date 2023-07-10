@@ -34,7 +34,7 @@ logrconf = {
     "disable_existing_loggers": False,
     "formatters": {
         "standard": {
-            "format": "[FBDB] %(asctime)s [%(levelname)s] %(message)s",
+            "format": "[FPBS] %(asctime)s [%(levelname)s] %(message)s",
             "datefmt": "[%Y-%m-%d %I:%M:%S %z]",
         },
     },
@@ -60,13 +60,13 @@ wsgiconf = {
     "formatters": {
         "default": {
             "()": "uvicorn.logging.DefaultFormatter",
-            "fmt": "[FBDB] %(asctime)s [%(levelname)s] %(message)s",
+            "fmt": "[FPBS] %(asctime)s [%(levelname)s] %(message)s",
             "datefmt": "[%Y-%m-%d %I:%M:%S %z]",
             "use_colors": None
         },
         "access": {
             "()": "uvicorn.logging.AccessFormatter",
-            "fmt": "[FBDB] %(asctime)s [%(levelname)s] %(client_addr)s - '%(request_line)s' %(status_code)s",
+            "fmt": "[FPBS] %(asctime)s [%(levelname)s] %(client_addr)s - '%(request_line)s' %(status_code)s",
             "datefmt": "[%Y-%m-%d %I:%M:%S %z]",
         }
     },
