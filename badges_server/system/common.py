@@ -1,7 +1,8 @@
+from abc import ABC
 from enum import Enum
 from typing import Optional
+
 from pydantic import BaseModel
-from abc import ABC
 
 
 class APIResultAction(str, Enum):

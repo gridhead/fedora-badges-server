@@ -1,22 +1,15 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy import select
-
-from badges_server.system.models.user import SelectOneResult
-from sqlalchemy.orm import selectinload
-from badges_server.config import logrdata
-from badges_server.system.models import user as user_model
 from sqlalchemy.ext.asyncio import AsyncSession
-from badges_server.system.database import dep_db_async_session
-from badges_server.database.objs import User
-from starlette.status import (
-    HTTP_201_CREATED,
-    HTTP_403_FORBIDDEN,
-    HTTP_404_NOT_FOUND,
-    HTTP_409_CONFLICT,
-)
+from sqlalchemy.orm import selectinload
+from starlette.status import HTTP_404_NOT_FOUND
 
+from badges_server.database.objs import User
+from badges_server.system.database import dep_db_async_session
+from badges_server.system.models.user import SelectOneResult
 
 router = APIRouter(prefix="/users")
+
 
 @router.get("/{id}", response_model=SelectOneResult, tags=["users"])
 async def select_user(id: int, db_async_session: AsyncSession = Depends(dep_db_async_session)):

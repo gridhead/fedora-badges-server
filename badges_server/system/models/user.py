@@ -3,6 +3,7 @@ from datetime import datetime
 from typing import List, Optional
 
 from pydantic import BaseModel
+
 from badges_server.system.common import APIResult
 
 
@@ -69,6 +70,7 @@ class UserPeruseSole_Return(UserBase):
     lastseen: datetime
     withdraw: bool
     rank: int
+
 
 class SelectOneResult(APIResult):
     user: UserPeruseSole_Return
