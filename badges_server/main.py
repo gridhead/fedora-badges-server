@@ -1,3 +1,5 @@
+import os
+
 import click
 
 from badges_server import __vers__, readconf
@@ -17,10 +19,8 @@ from badges_server.system.main import start_service
 @click.version_option(version=__vers__, prog_name="badges_server")
 def main(conffile=None):
     if conffile:
-        confdict = {}
-        with open(conffile) as confobjc:
-            exec(compile(confobjc.read(), conffile, "exec"), confdict)
-        readconf(confdict)
+        os.environ["FSBS_CONFFILE"] = os.path.abspath(conffile)
+        readconf()
 
 
 @main.command(name="setup", help="Setup the database schema in the specified environment")

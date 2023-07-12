@@ -1,21 +1,13 @@
-import copy
 import sys
 
 import uvicorn.config
+from fastapi import FastAPI
 
+from badges_server import __vers__, readconf
 from badges_server.config import logrdata, standard
 from badges_server.database import data
-from badges_server.exceptions import BadgesServerException
-
-from fastapi import FastAPI
-from badges_server.system.router import user
-
-from badges_server.database import data
-from badges_server import interactions
 from badges_server.exceptions import BadgesServerConfigurationError
-
-from badges_server import __vers__
-
+from badges_server.system.router import user
 
 desc = "Fedora Badges Server"
 
@@ -46,9 +38,10 @@ app.include_router(user.router, prefix=PREFIX)
 @app.on_event("startup")
 async def init_model():
     try:
+        readconf()
         data.init_sync_model()
         await data.init_async_model()
-    except BadgesServerConfigurationError as expt:
+    except BadgesServerConfigurationError:
         logrdata.logrobjc.error("Configuration file needs attention")
         sys.exit(1)
 
@@ -61,7 +54,9 @@ def start_service():
     logrdata.logrobjc.info(f"Port number      : {standard.servport}")
     logrdata.logrobjc.info(f"Log level        : {loglevel_string} / {loglevel_string}")
     logrdata.logrobjc.info(f"Reload on change : {str(standard.cgreload).upper()}")
-    logrdata.logrobjc.info(f"Serving API docs on http://{standard.servhost}:{standard.servport}/docs")
+    logrdata.logrobjc.info(
+        f"Serving API docs on http://{standard.servhost}:{standard.servport}/docs"
+    )
     uvicorn.run(
         "badges_server.system.main:app",
         host=standard.servhost,
