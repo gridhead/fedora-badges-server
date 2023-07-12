@@ -64,6 +64,6 @@ async def init_async_model(engnobjc: AsyncEngine = None):
     async_session_maker.configure(bind=engnobjc)
 
 
-def init_model(syncengn: Engine = None, asyneng: Engine = None):
+def init_model(syncengn: Engine, asyneng: Engine):
     init_sync_model(syncengn)
     asyncio.run(init_async_model(asyneng))
