@@ -4,6 +4,8 @@ from typing import List, Optional
 
 from pydantic import BaseModel
 
+from badges_server.system.common import APIResult
+
 
 class UserCreateableMixin(BaseModel):
     """
@@ -21,7 +23,7 @@ class UserBase(BaseModel, ABC):
     id: Optional[int]
     mailaddr: Optional[str]
     username: Optional[str]
-    desc: Optional[str]
+    description: Optional[str]
     makedate: Optional[datetime]
     lastseen: Optional[datetime]
     withdraw: Optional[bool]
@@ -35,7 +37,7 @@ class UserCreate_Parameter(UserBase, UserCreateableMixin):
 
     mailaddr: str
     username: str
-    desc: Optional[str] = None
+    description: Optional[str] = None
     withdraw: Optional[bool] = False
 
 
@@ -63,11 +65,15 @@ class UserPeruseSole_Return(UserBase):
     id: int
     mailaddr: str
     username: str
-    desc: str
+    description: str
     makedate: datetime
     lastseen: datetime
     withdraw: bool
     rank: int
+
+
+class SelectOneResult(APIResult):
+    user: UserPeruseSole_Return
 
 
 class UserPeruseMany_Parameter(UserBase):

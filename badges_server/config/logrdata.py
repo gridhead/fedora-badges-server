@@ -1,7 +1,7 @@
 import logging
 
 logging.basicConfig(
-    format="[FBDB] %(asctime)s [%(levelname)s] %(message)s",
+    format="[FPBS] %(asctime)s [%(levelname)s] %(message)s",
     datefmt="[%Y-%m-%d %I:%M:%S %z]",
     level=logging.INFO,
 )

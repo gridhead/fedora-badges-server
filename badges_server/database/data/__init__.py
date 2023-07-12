@@ -6,13 +6,13 @@ from sqlalchemy.engine import Engine
 from sqlalchemy.ext.asyncio import AsyncEngine, AsyncSession, create_async_engine
 from sqlalchemy.orm import declarative_base, sessionmaker
 
-from badges_server.conf import logrdata, nameconv, standard
+from badges_server.config import logrdata, nameconv, standard
 
 metadata = MetaData(naming_convention=nameconv)
 baseobjc = declarative_base(metadata=metadata)
 
 
-def make_sync_engine():
+def get_sync_engine():
     engnloca = URL.create(
         drivername="postgresql+psycopg2",
         username=standard.username,
@@ -30,7 +30,7 @@ def make_sync_engine():
     return engnobjc
 
 
-def make_async_engine():
+def get_async_engine():
     engnloca = URL.create(
         drivername="postgresql+asyncpg",
         username=standard.username,
@@ -48,17 +48,20 @@ def make_async_engine():
     return engnobjc
 
 
-syncsess_generate = sessionmaker(expire_on_commit=False, future=True)
-asynsess_generate = sessionmaker(class_=AsyncSession, expire_on_commit=False, future=True)
+sync_session_maker = sessionmaker(expire_on_commit=False, future=True)
+async_session_maker = sessionmaker(class_=AsyncSession, expire_on_commit=False, future=True)
 
 
-def init_sync_model(engnobjc: Engine):
-    syncengn = make_sync_engine()
-    syncsess_generate.configure(bind=syncengn)
+def init_sync_model(engnobjc: Engine = None):
+    if not engnobjc:
+        engnobjc = get_sync_engine()
+    sync_session_maker.configure(bind=engnobjc)
 
-async def init_async_model(engnobjc: AsyncEngine):
-    asynengn = make_async_engine()
-    asynsess_generate.configure(bind=asynengn)
+
+async def init_async_model(engnobjc: AsyncEngine = None):
+    if not engnobjc:
+        engnobjc = get_async_engine()
+    async_session_maker.configure(bind=engnobjc)
 
 
 def init_model(syncengn: Engine, asyneng: Engine):
