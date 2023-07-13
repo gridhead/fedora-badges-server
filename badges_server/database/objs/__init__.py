@@ -1,3 +1,4 @@
+from badges_server.database.objs.access import Access  # noqa: F401
 from badges_server.database.objs.accolade import Accolade  # noqa: F401
 from badges_server.database.objs.granting import Granting  # noqa: F401
 from badges_server.database.objs.invitation import Invitation  # noqa: F401

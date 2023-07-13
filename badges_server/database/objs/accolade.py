@@ -2,10 +2,10 @@ from sqlalchemy import Column, ForeignKey, Integer, UnicodeText
 
 from badges_server.database.data import baseobjc
 from badges_server.database.objs.type import Type
-from badges_server.util import CreateableMixin
+from badges_server.database.util import CreateableMixin, UUIDCreateableMixin
 
 
-class Accolade(baseobjc, CreateableMixin):
+class Accolade(baseobjc, CreateableMixin, UUIDCreateableMixin):
     __tablename__ = "accolade"
     id = Column(Integer, primary_key=True, nullable=False)
     name = Column(UnicodeText, unique=True, nullable=False)

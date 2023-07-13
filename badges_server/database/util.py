@@ -1,6 +1,6 @@
 import datetime
 
-from sqlalchemy import Column, Integer
+from sqlalchemy import Column, Integer, UnicodeText
 from sqlalchemy.ext.compiler import compiles
 from sqlalchemy.sql.expression import FunctionElement
 from sqlalchemy.types import DateTime as sqlDateTime
@@ -56,7 +56,7 @@ class CreateableMixin:
     makedate = Column(TZDateTime, nullable=False, server_default=utcnow())
 
 
-class UserCreateableMixin(CreateableMixin):
+class UserCreateableMixin:
     """
     An SQLAlchemy mixin to calculate the current user's rank
 
@@ -65,3 +65,11 @@ class UserCreateableMixin(CreateableMixin):
     """
 
     rank = Column(Integer, unique=False, nullable=False, default=0)
+
+
+class UUIDCreateableMixin:
+    """
+    An SQLAlchemy mixin to automatically generate a custom 8-digit UUID string
+    """
+
+    uuid = Column(UnicodeText, unique=True, nullable=False)
