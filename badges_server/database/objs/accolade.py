@@ -7,11 +7,11 @@ from badges_server.database.util import CreateableMixin, UUIDCreateableMixin
 
 class Accolade(baseobjc, CreateableMixin, UUIDCreateableMixin):
     __tablename__ = "accolade"
-    id = Column(Integer, primary_key=True, nullable=False)
-    name = Column(UnicodeText, unique=True, nullable=False)
-    description = Column(UnicodeText, unique=False, nullable=True, default=None)
-    imageurl = Column(UnicodeText, unique=False, nullable=False)
-    origrqst = Column(UnicodeText, unique=False, nullable=True, default=None)
-    type_id = Column(Integer, ForeignKey(Type.id), unique=False)
-    sequence = Column(Integer, unique=False, nullable=True, default=None)
-    tags = Column(UnicodeText, unique=False, nullable=True, default=None)
+    id = Column("id", Integer, primary_key=True, nullable=False)
+    name = Column("name", UnicodeText, unique=True, nullable=False)
+    desc = Column("desc", UnicodeText, unique=False, nullable=True, default=None)
+    imageurl = Column("imageurl", UnicodeText, unique=False, nullable=False)
+    criteria = Column("criteria", UnicodeText, unique=False, nullable=True, default=None)
+    type_id = Column("type_id", Integer, ForeignKey(Type.id), unique=False)
+    sequence = Column("sequence", Integer, unique=False, nullable=True, default=None)
+    tags = Column("tags", UnicodeText, unique=False, nullable=True, default=None)

@@ -6,9 +6,9 @@ from badges_server.database.util import CreateableMixin, UserCreateableMixin, UU
 
 class User(baseobjc, CreateableMixin, UUIDCreateableMixin, UserCreateableMixin):
     __tablename__ = "user"
-    id = Column(Integer, primary_key=True, nullable=False)
-    mailaddr = Column(UnicodeText, unique=False, nullable=False)
-    username = Column(UnicodeText, unique=True, nullable=False)
-    description = Column(UnicodeText, unique=False, nullable=True, default=None)
-    withdraw = Column(Boolean, unique=False, nullable=False, default=False)
-    headuser = Column(Boolean, unique=False, nullable=False, default=False)
+    id = Column("id", Integer, primary_key=True, nullable=False)
+    mailaddr = Column("mailaddr", UnicodeText, unique=False, nullable=False)
+    username = Column("username", UnicodeText, unique=True, nullable=False)
+    description = Column("description", UnicodeText, unique=False, nullable=True, default=None)
+    withdraw = Column("withdraw", Boolean, unique=False, nullable=False, default=False)
+    headuser = Column("headuser", Boolean, unique=False, nullable=False, default=False)
