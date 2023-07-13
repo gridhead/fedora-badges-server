@@ -27,9 +27,6 @@ def dep_user_factory(optional: bool = False, **kwargs):
                 return None
         username = cred.username
         password = cred.password
-        # query = select(User).filter_by(username=username)
-        # result = await db_async_session.execute(query)
-        # userdata = result.scalar_one_or_none()
 
         userdata = (
             await db_async_session.execute(select(User).filter_by(username=username))
@@ -42,7 +39,7 @@ def dep_user_factory(optional: bool = False, **kwargs):
 
         passdata = (
             await db_async_session.execute(
-                select(Access).filter_by(user_id=userdata.id, name="BDGS_ACCESS")
+                select(Access).filter_by(user_id=userdata.id, active=True)
             )
         ).scalar_one_or_none()
 

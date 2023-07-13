@@ -13,7 +13,7 @@ from starlette.status import (
 )
 
 from badges_server.config import logrdata
-from badges_server.database.objs import User
+from badges_server.database.objs import Access, User
 from badges_server.system.auth import dep_user
 from badges_server.system.database import dep_db_async_session
 from badges_server.system.models.user import UserCreateModel, UserModel, UserResult
@@ -50,8 +50,8 @@ async def create_user(
         username=data.username,
         mailaddr=data.mailaddr,
         description=data.description,
-        withdraw=data.withdraw,
-        headuser=data.headuser,
+        withdraw=False,
+        headuser=False,
         uuid=uuid4().hex[0:8],
     )
     db_async_session.add(made_user)
@@ -62,5 +62,16 @@ async def create_user(
         logrdata.logrobjc.warning(str(expt))
         raise HTTPException(HTTP_409_CONFLICT, str(expt))
     user_result = UserModel.from_orm(made_user).dict()
+    uuidcode = uuid4().hex
+    made_access = Access(
+        user_id=UserModel.from_orm(made_user).id, code=uuidcode, active=True, uuid=uuidcode[0:4]
+    )
+    db_async_session.add(made_access)
+    try:
+        await db_async_session.flush()
+    except IntegrityError as expt:
+        logrdata.logrobjc.warning("Uniqueness constraint failed - Please try again")
+        logrdata.logrobjc.warning(str(expt))
+        raise HTTPException(HTTP_409_CONFLICT, str(expt))
     await db_async_session.flush()
     return {"action": "post", "user": user_result}
