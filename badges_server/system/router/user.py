@@ -134,7 +134,7 @@ async def promote_user_access_level(
     if user_data.withdraw:
         raise HTTPException(
             HTTP_422_UNPROCESSABLE_ENTITY,
-            f"User with the requested UUID '{uuid}' have withdrawn from the service",
+            f"User with the requested UUID '{uuid}' have withdrawn from the service so their access levels cannot be modified",  # noqa: E501
         )
     if user_data.headuser:
         raise HTTPException(
@@ -170,7 +170,7 @@ async def demote_user_access_level(
     if user_data.withdraw:
         raise HTTPException(
             HTTP_422_UNPROCESSABLE_ENTITY,
-            f"User with the requested UUID '{uuid}' have withdrawn from the service",
+            f"User with the requested UUID '{uuid}' have withdrawn from the service so their access levels cannot be modified",  # noqa: E501
         )
     if not user_data.headuser:
         raise HTTPException(
@@ -178,5 +178,67 @@ async def demote_user_access_level(
             f"User with the requested UUID '{uuid}' does not have ADMIN access levels",
         )
     user_data.headuser = False
+    await db_async_session.flush()
+    return {"action": "put", "user": user_data}
+
+
+@router.put("/disable", status_code=HTTP_200_OK, response_model=UserResult, tags=["users"])
+async def disable_user_account(
+    uuid: str,
+    db_async_session: AsyncSession = Depends(dep_db_async_session),
+    user: User = Depends(dep_user),
+):
+    """
+    Disable the user account for those users who do not want to participate in the service
+    """
+    if not user.headuser:
+        raise HTTPException(
+            HTTP_403_FORBIDDEN,
+            "Access to this endpoint is now allowed for users with inadequate access levels",
+        )
+    query = select(User).filter_by(uuid=uuid).options(selectinload("*"))
+    result = await db_async_session.execute(query)
+    user_data = result.scalar_one_or_none()
+    if not user_data:
+        raise HTTPException(
+            HTTP_404_NOT_FOUND, f"User with the requested UUID '{uuid}' was not found"
+        )
+    if user_data.withdraw:
+        raise HTTPException(
+            HTTP_422_UNPROCESSABLE_ENTITY,
+            f"User with the requested UUID '{uuid}' have already withdrawn from the service",
+        )
+    user_data.withdraw = True
+    await db_async_session.flush()
+    return {"action": "put", "user": user_data}
+
+
+@router.put("/enable", status_code=HTTP_200_OK, response_model=UserResult, tags=["users"])
+async def enable_user_account(
+    uuid: str,
+    db_async_session: AsyncSession = Depends(dep_db_async_session),
+    user: User = Depends(dep_user),
+):
+    """
+    Enable the user account for those users who wish to continue participating in the service
+    """
+    if not user.headuser:
+        raise HTTPException(
+            HTTP_403_FORBIDDEN,
+            "Access to this endpoint is now allowed for users with inadequate access levels",
+        )
+    query = select(User).filter_by(uuid=uuid).options(selectinload("*"))
+    result = await db_async_session.execute(query)
+    user_data = result.scalar_one_or_none()
+    if not user_data:
+        raise HTTPException(
+            HTTP_404_NOT_FOUND, f"User with the requested UUID '{uuid}' was not found"
+        )
+    if not user_data.withdraw:
+        raise HTTPException(
+            HTTP_422_UNPROCESSABLE_ENTITY,
+            f"User with the requested UUID '{uuid}' have already enabled their account",
+        )
+    user_data.withdraw = False
     await db_async_session.flush()
     return {"action": "put", "user": user_data}
