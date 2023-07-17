@@ -33,9 +33,15 @@ def dep_user_factory(optional: bool = False, **kwargs):
         ).scalar_one_or_none()
 
         if userdata.withdraw:
-            raise HTTPException(HTTP_401_UNAUTHORIZED)
+            raise HTTPException(
+                HTTP_401_UNAUTHORIZED,
+                "Access to this endpoint is now allowed for users with inadequate access levels",
+            )
         if not userdata:
-            raise HTTPException(HTTP_401_UNAUTHORIZED)
+            raise HTTPException(
+                HTTP_401_UNAUTHORIZED,
+                "Access to this endpoint is now allowed for users with inadequate access levels",
+            )
 
         passdata = (
             await db_async_session.execute(
@@ -44,9 +50,15 @@ def dep_user_factory(optional: bool = False, **kwargs):
         ).scalar_one_or_none()
 
         if not passdata:
-            raise HTTPException(HTTP_401_UNAUTHORIZED)
+            raise HTTPException(
+                HTTP_401_UNAUTHORIZED,
+                "Access to this endpoint is now allowed for users with inadequate access levels",
+            )
         if passdata.code != password:
-            raise HTTPException(HTTP_403_FORBIDDEN)
+            raise HTTPException(
+                HTTP_403_FORBIDDEN,
+                "Access to this endpoint is now allowed for users with inadequate access levels",
+            )
         return userdata
 
     return dep_user_actual
