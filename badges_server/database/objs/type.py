@@ -6,7 +6,7 @@ from badges_server.database.util import CreateableMixin, UUIDCreateableMixin
 
 class Type(baseobjc, UUIDCreateableMixin, CreateableMixin):
     __tablename__ = "type"
-    id = Column(Integer, primary_key=True, nullable=False)
-    name = Column(UnicodeText, unique=False, nullable=False)
-    description = Column(UnicodeText, unique=False, nullable=True, default=None)
-    arranged = Column(Boolean, unique=False, nullable=False)
+    id = Column("id", Integer, primary_key=True, nullable=False)
+    name = Column("name", UnicodeText, unique=False, nullable=False)
+    desc = Column("desc", UnicodeText, unique=False, nullable=True, default=None)
+    arranged = Column("arranged", Boolean, unique=False, nullable=False)

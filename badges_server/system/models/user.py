@@ -1,18 +1,10 @@
 from abc import ABC
 from datetime import datetime
-from typing import List, Optional
+from typing import Optional
 
 from pydantic import BaseModel
 
-from badges_server.system.common import APIResult
-
-
-class UserCreateableMixin(BaseModel):
-    """
-    Mixin for obtaining the current datetime
-    """
-
-    makedate: datetime
+from badges_server.system.common import APIResult, CreateableMixin, UUIDCreateableMixin
 
 
 class UserBase(BaseModel, ABC):
@@ -20,103 +12,29 @@ class UserBase(BaseModel, ABC):
     Base: User
     """
 
+    class Config:
+        orm_mode = True
+
     id: Optional[int]
     mailaddr: Optional[str]
     username: Optional[str]
     description: Optional[str]
-    makedate: Optional[datetime]
     lastseen: Optional[datetime]
     withdraw: Optional[bool]
+    headuser: Optional[bool]
+    makedate: Optional[datetime]
+    uuid: Optional[str]
     rank: Optional[int]
 
 
-class UserCreate_Parameter(UserBase, UserCreateableMixin):
-    """
-    Expected parameter type for the function intr.user.create
-    """
-
+class UserModel(UserBase, CreateableMixin, UUIDCreateableMixin):
     mailaddr: str
     username: str
-    description: Optional[str] = None
-    withdraw: Optional[bool] = False
 
 
-class UserCreate_Return(UserBase):
-    """
-    Expected return type for the function intr.user.create
-    """
-
-    id: int
+class UserResult(APIResult):
+    user: UserModel
 
 
-class UserPeruseSole_Parameter(UserBase):
-    """
-    Expected parameter type for the function intr.user.peruse_sole
-    """
-
-    id: int
-
-
-class UserPeruseSole_Return(UserBase):
-    """
-    Expected return type for the function intr.user.peruse_sole
-    """
-
-    id: int
-    mailaddr: str
-    username: str
-    description: str
-    makedate: datetime
-    lastseen: datetime
-    withdraw: bool
-    rank: int
-
-
-class SelectOneResult(APIResult):
-    user: UserPeruseSole_Return
-
-
-class UserPeruseMany_Parameter(UserBase):
-    """
-    Expected parameter type for the function intr.user.peruse_many
-    """
-
-
-class UserPeruseMany_Return(UserBase):
-    """
-    Expected return type for the function intr.user.peruse_many
-    """
-
-    file: List[UserPeruseSole_Return]
-
-
-class UserUpdate_Parameter(UserBase):
-    """
-    Expected parameter type for the function intr.user.update
-    """
-
-    id: int
-
-
-class UserUpdate_Return(UserBase):
-    """
-    Expected return type for the function intr.user.update
-    """
-
-    id: int
-
-
-class UserRemove_Parameter(UserBase):
-    """
-    Expected parameter type for the function intr.user.remove
-    """
-
-    id: int
-
-
-class UserRemove_Return(UserBase):
-    """
-    Expected return type for the function intr.user.remove
-    """
-
-    id: int
+class UserCreateModel(UserModel):
+    pass

@@ -7,6 +7,6 @@ from badges_server.database.objs.user import User
 
 class Provider(baseobjc):
     __tablename__ = "provider"
-    id = Column(Integer, primary_key=True, nullable=False)
-    user_id = Column(Integer, ForeignKey(User.id), nullable=False)
-    accolade_id = Column(Integer, ForeignKey(Accolade.id), nullable=False)
+    id = Column("id", Integer, primary_key=True, nullable=False)
+    user_id = Column("user_id", Integer, ForeignKey(User.id), nullable=False)
+    accolade_id = Column("accolade_id", Integer, ForeignKey(Accolade.id), nullable=False)

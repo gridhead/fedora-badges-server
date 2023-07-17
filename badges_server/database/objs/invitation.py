@@ -1,4 +1,4 @@
-from sqlalchemy import Column, ForeignKey, Integer, UnicodeText
+from sqlalchemy import Boolean, Column, ForeignKey, Integer, UnicodeText
 
 from badges_server.database.data import baseobjc
 from badges_server.database.objs.accolade import Accolade
@@ -8,8 +8,11 @@ from badges_server.database.util import CreateableMixin, TZDateTime, UUIDCreatea
 
 class Invitation(baseobjc, CreateableMixin, UUIDCreateableMixin):
     __tablename__ = "invitation"
-    id = Column(Integer, primary_key=True, nullable=False)
-    stopdate = Column(TZDateTime, unique=False, nullable=True, default=None)
-    accolade_id = Column(Integer, ForeignKey(Accolade.id), unique=False, nullable=False)
-    user_id = Column(Integer, ForeignKey(User.id), unique=False, nullable=False)
-    code = Column(UnicodeText, unique=True, nullable=False)
+    id = Column("id", Integer, primary_key=True, nullable=False)
+    stopdate = Column("stopdate", TZDateTime, unique=False, nullable=True, default=None)
+    accolade_id = Column(
+        "accolade_id", Integer, ForeignKey(Accolade.id), unique=False, nullable=False
+    )
+    active = Column("active", Boolean, unique=False, nullable=False)
+    user_id = Column("user_id", Integer, ForeignKey(User.id), unique=False, nullable=False)
+    code = Column("code", UnicodeText, unique=True, nullable=False)

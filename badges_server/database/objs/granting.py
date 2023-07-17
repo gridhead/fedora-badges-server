@@ -8,7 +8,9 @@ from badges_server.database.util import CreateableMixin, UUIDCreateableMixin
 
 class Granting(baseobjc, CreateableMixin, UUIDCreateableMixin):
     __tablename__ = "granting"
-    id = Column(Integer, primary_key=True, nullable=False)
-    accolade_id = Column(Integer, ForeignKey(Accolade.id), unique=False, nullable=False)
-    user_id = Column(Integer, ForeignKey(User.id), unique=False, nullable=False)
-    reason = Column(UnicodeText, unique=False, nullable=False)
+    id = Column("id", Integer, primary_key=True, nullable=False)
+    accolade_id = Column(
+        "accolade_id", Integer, ForeignKey(Accolade.id), unique=False, nullable=False
+    )
+    user_id = Column("user_id", Integer, ForeignKey(User.id), unique=False, nullable=False)
+    reason = Column("reason", UnicodeText, unique=False, nullable=False)

@@ -1,4 +1,5 @@
 import datetime
+from uuid import uuid4
 
 from sqlalchemy import Column, Integer, UnicodeText
 from sqlalchemy.ext.compiler import compiles
@@ -64,6 +65,7 @@ class UserCreateableMixin:
     TODO - Default should be calculated after going through the existing users.
     """
 
+    lastseen = Column(TZDateTime, unique=False, nullable=False, server_default=utcnow())
     rank = Column(Integer, unique=False, nullable=False, default=0)
 
 
@@ -72,4 +74,4 @@ class UUIDCreateableMixin:
     An SQLAlchemy mixin to automatically generate a custom 8-digit UUID string
     """
 
-    uuid = Column(UnicodeText, unique=True, nullable=False)
+    uuid = Column(UnicodeText, unique=True, nullable=False, default=uuid4().hex[0:8])
