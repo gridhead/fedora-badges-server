@@ -4,7 +4,7 @@ from typing import Optional
 
 from pydantic import BaseModel
 
-from badges_server.system.common import APIResult, CreateableMixin, UUIDCreateableMixin
+from badges_server.system.common import APIResult
 
 
 class UserBase(BaseModel, ABC):
@@ -27,7 +27,7 @@ class UserBase(BaseModel, ABC):
     rank: Optional[int]
 
 
-class UserModel(UserBase, CreateableMixin, UUIDCreateableMixin):
+class UserModel(UserBase):
     mailaddr: str
     username: str
 
@@ -38,3 +38,8 @@ class UserResult(APIResult):
 
 class UserCreateModel(UserModel):
     pass
+
+
+class UserChangeDescriptionModel(BaseModel):
+    uuid: str
+    desc: str

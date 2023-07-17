@@ -18,7 +18,12 @@ from badges_server.config import logrdata
 from badges_server.database.objs import Access, User
 from badges_server.system.auth import dep_user
 from badges_server.system.database import dep_db_async_session
-from badges_server.system.models.user import UserCreateModel, UserModel, UserResult
+from badges_server.system.models.user import (
+    UserChangeDescriptionModel,
+    UserCreateModel,
+    UserModel,
+    UserResult,
+)
 
 router = APIRouter(prefix="/users")
 
@@ -240,5 +245,31 @@ async def enable_user_account(
             f"User with the requested UUID '{uuid}' have already enabled their account",
         )
     user_data.withdraw = False
+    await db_async_session.flush()
+    return {"action": "put", "user": user_data}
+
+
+@router.put("/desc", status_code=HTTP_200_OK, response_model=UserResult, tags=["users"])
+async def change_account_description(
+    data: UserChangeDescriptionModel,
+    db_async_session: AsyncSession = Depends(dep_db_async_session),
+    user: User = Depends(dep_user),
+):
+    """
+    Change the description of the user with the requested UUID
+    """
+    if not user.headuser:
+        raise HTTPException(
+            HTTP_403_FORBIDDEN,
+            "Access to this endpoint is now allowed for users with inadequate access levels",
+        )
+    query = select(User).filter_by(uuid=data.uuid).options(selectinload("*"))
+    result = await db_async_session.execute(query)
+    user_data = result.scalar_one_or_none()
+    if not user_data:
+        raise HTTPException(
+            HTTP_404_NOT_FOUND, f"User with the requested UUID '{data.uuid}' was not found"
+        )
+    user_data.desc = data.desc
     await db_async_session.flush()
     return {"action": "put", "user": user_data}

@@ -32,12 +32,13 @@ def dep_user_factory(optional: bool = False, **kwargs):
             await db_async_session.execute(select(User).filter_by(username=username))
         ).scalar_one_or_none()
 
-        if userdata.withdraw:
+        if not userdata:
             raise HTTPException(
                 HTTP_401_UNAUTHORIZED,
                 "Access to this endpoint is now allowed for users with inadequate access levels",
             )
-        if not userdata:
+
+        if userdata.withdraw:
             raise HTTPException(
                 HTTP_401_UNAUTHORIZED,
                 "Access to this endpoint is now allowed for users with inadequate access levels",
