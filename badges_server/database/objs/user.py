@@ -9,6 +9,6 @@ class User(baseobjc, CreateableMixin, UUIDCreateableMixin, UserCreateableMixin):
     id = Column("id", Integer, primary_key=True, nullable=False)
     mailaddr = Column("mailaddr", UnicodeText, unique=False, nullable=False)
     username = Column("username", UnicodeText, unique=True, nullable=False)
-    description = Column("description", UnicodeText, unique=False, nullable=True, default=None)
+    desc = Column("description", UnicodeText, unique=False, nullable=True, default=None)
     withdraw = Column("withdraw", Boolean, unique=False, nullable=False, default=False)
     headuser = Column("headuser", Boolean, unique=False, nullable=False, default=False)
