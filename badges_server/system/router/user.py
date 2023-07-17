@@ -76,7 +76,7 @@ async def create_user(
     made_user = User(
         username=data.username,
         mailaddr=data.mailaddr,
-        description=data.description,
+        desc=data.desc,
         withdraw=False,
         headuser=False,
         uuid=uuid4().hex[0:8],

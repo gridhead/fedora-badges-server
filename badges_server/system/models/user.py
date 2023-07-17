@@ -18,7 +18,7 @@ class UserBase(BaseModel, ABC):
     id: Optional[int]
     mailaddr: Optional[str]
     username: Optional[str]
-    description: Optional[str]
+    desc: Optional[str]
     lastseen: Optional[datetime]
     withdraw: Optional[bool]
     headuser: Optional[bool]
