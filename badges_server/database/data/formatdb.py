@@ -4,8 +4,10 @@ from pathlib import Path
 from alembic import command, config
 from sqlalchemy import URL, inspect
 
-# Import the database models here so that the classes are considered by metadata.create_all() below
 from badges_server.config import logrdata, standard
+
+# Import the database models here so that the classes are considered by metadata.create_all() below
+from badges_server.database import objs  # noqa: F401
 from badges_server.database.data import get_sync_engine, metadata
 
 migrpath = str(Path(str(Path(__file__).parent.parent), "migr"))
