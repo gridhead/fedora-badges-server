@@ -20,6 +20,7 @@ from badges_server.system.auth import dep_user
 from badges_server.system.database import dep_db_async_session
 from badges_server.system.models.user import (
     UserChangeDescriptionModel,
+    UserChangeEmailAddressModel,
     UserCreateModel,
     UserModel,
     UserResult,
@@ -271,5 +272,31 @@ async def change_account_description(
             HTTP_404_NOT_FOUND, f"User with the requested UUID '{data.uuid}' was not found"
         )
     user_data.desc = data.desc
+    await db_async_session.flush()
+    return {"action": "put", "user": user_data}
+
+
+@router.put("/mailaddr", status_code=HTTP_200_OK, response_model=UserResult, tags=["users"])
+async def change_account_email_address(
+    data: UserChangeEmailAddressModel,
+    db_async_session: AsyncSession = Depends(dep_db_async_session),
+    user: User = Depends(dep_user),
+):
+    """
+    Change the email address of the user with the requested UUID
+    """
+    if not user.headuser:
+        raise HTTPException(
+            HTTP_403_FORBIDDEN,
+            "Access to this endpoint is now allowed for users with inadequate access levels",
+        )
+    query = select(User).filter_by(uuid=data.uuid).options(selectinload("*"))
+    result = await db_async_session.execute(query)
+    user_data = result.scalar_one_or_none()
+    if not user_data:
+        raise HTTPException(
+            HTTP_404_NOT_FOUND, f"User with the requested UUID '{data.uuid}' was not found"
+        )
+    user_data.mailaddr = data.mailaddr
     await db_async_session.flush()
     return {"action": "put", "user": user_data}

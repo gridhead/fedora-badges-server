@@ -43,3 +43,8 @@ class UserCreateModel(UserModel):
 class UserChangeDescriptionModel(BaseModel):
     uuid: str
     desc: str
+
+
+class UserChangeEmailAddressModel(BaseModel):
+    uuid: str
+    mailaddr: str
