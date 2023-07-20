@@ -15,7 +15,8 @@ class UserBase(BaseModel, ABC):
     class Config:
         orm_mode = True
 
-    id: Optional[int]
+
+class UserModelExternal(UserBase):
     mailaddr: Optional[str]
     username: Optional[str]
     desc: Optional[str]
@@ -27,24 +28,35 @@ class UserBase(BaseModel, ABC):
     rank: Optional[int]
 
 
-class UserModel(UserBase):
-    mailaddr: str
-    username: str
+class UserModelInternal(UserModelExternal):
+    id: Optional[int]
 
 
 class UserResult(APIResult):
-    user: UserModel
+    user: UserModelExternal
 
 
-class UserCreateModel(UserModel):
-    pass
+class UserCreateModel(BaseModel):
+    mailaddr: str
+    username: str
+    desc: Optional[str]
 
 
-class UserChangeDescriptionModel(BaseModel):
+class UserUpdatePermissionModel(BaseModel):
+    uuid: str
+    head: bool
+
+
+class UserUpdateActivityModel(BaseModel):
+    uuid: str
+    withdraw: bool
+
+
+class UserUpdateDescriptionModel(BaseModel):
     uuid: str
     desc: str
 
 
-class UserChangeEmailAddressModel(BaseModel):
+class UserUpdateEmailAddressModel(BaseModel):
     uuid: str
     mailaddr: str
