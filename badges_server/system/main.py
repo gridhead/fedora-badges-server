@@ -7,12 +7,13 @@ from badges_server import __vers__, readconf
 from badges_server.config import logrdata, standard
 from badges_server.database import data
 from badges_server.exceptions import BadgesServerConfigurationError
-from badges_server.system.router import user
+from badges_server.system.router import access, user
 
 desc = "Fedora Badges Server"
 
 
 tags_metadata = [
+    {"name": "access", "description": "Operations on accesses"},
     {"name": "accolades", "description": "Operations on accolades"},
     {"name": "grantings", "description": "Operations on grantings"},
     {"name": "invitations", "description": "Operations on invitation"},
@@ -33,6 +34,7 @@ app = FastAPI(
 PREFIX = "/api/v1"
 
 app.include_router(user.router, prefix=PREFIX)
+app.include_router(access.router, prefix=PREFIX)
 
 
 @app.on_event("startup")
