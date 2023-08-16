@@ -9,7 +9,7 @@ from badges_server.system.common import APIResult
 
 class AccessBase(BaseModel, ABC):
     """
-    Base: User
+    Base: Access
     """
 
     class Config:
