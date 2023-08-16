@@ -1,9 +1,17 @@
 from uuid import uuid4
 
 from fastapi import APIRouter, Depends, HTTPException
+from sqlalchemy import select
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession
-from starlette.status import HTTP_201_CREATED, HTTP_403_FORBIDDEN, HTTP_409_CONFLICT
+from sqlalchemy.orm import selectinload
+from starlette.status import (
+    HTTP_200_OK,
+    HTTP_201_CREATED,
+    HTTP_403_FORBIDDEN,
+    HTTP_404_NOT_FOUND,
+    HTTP_409_CONFLICT,
+)
 
 from badges_server.config import logrdata
 from badges_server.database.objs import Type, User
@@ -12,6 +20,23 @@ from badges_server.system.database import dep_db_async_session
 from badges_server.system.models.type import TypeCreateModel, TypeModelExternal, TypeResult
 
 router = APIRouter(prefix="/types")
+
+
+@router.get("/name/{name}", status_code=HTTP_200_OK, response_model=TypeResult, tags=["types"])
+async def select_type_by_name(
+    name: str, db_async_session: AsyncSession = Depends(dep_db_async_session)
+):
+    """
+    Return the type with the specified name
+    """
+    query = select(Type).filter_by(name=name).options(selectinload("*"))
+    result = await db_async_session.execute(query)
+    type_data = result.scalar_one_or_none()
+    if not type_data:
+        raise HTTPException(
+            HTTP_404_NOT_FOUND, f"Type with the requested name '{name}' was not found"
+        )
+    return {"action": "get", "type": type_data}
 
 
 @router.post("/create", status_code=HTTP_201_CREATED, response_model=TypeResult, tags=["types"])
