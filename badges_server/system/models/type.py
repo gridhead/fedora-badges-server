@@ -44,5 +44,10 @@ class TypeUpdateNameModel(BaseModel):
     name: str
 
 
+class TypeUpdateDescriptionModel(BaseModel):
+    uuid: str
+    desc: str
+
+
 class TypeResult(APIResult):
     type: TypeModel
