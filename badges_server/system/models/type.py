@@ -39,5 +39,10 @@ class TypeCreateModel(BaseModel):
     arranged: bool = False
 
 
+class TypeUpdateNameModel(BaseModel):
+    uuid: str
+    name: str
+
+
 class TypeResult(APIResult):
     type: TypeModel

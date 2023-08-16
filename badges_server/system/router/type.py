@@ -11,13 +11,19 @@ from starlette.status import (
     HTTP_403_FORBIDDEN,
     HTTP_404_NOT_FOUND,
     HTTP_409_CONFLICT,
+    HTTP_422_UNPROCESSABLE_ENTITY,
 )
 
 from badges_server.config import logrdata
 from badges_server.database.objs import Type, User
 from badges_server.system.auth import dep_user
 from badges_server.system.database import dep_db_async_session
-from badges_server.system.models.type import TypeCreateModel, TypeModelExternal, TypeResult
+from badges_server.system.models.type import (
+    TypeCreateModel,
+    TypeModelExternal,
+    TypeResult,
+    TypeUpdateNameModel,
+)
 
 router = APIRouter(prefix="/types")
 
@@ -85,3 +91,40 @@ async def create_type(
         logrdata.logrobjc.warning(str(expt))
         raise HTTPException(HTTP_409_CONFLICT, "Uniqueness constraint failed - Please try again")
     return {"action": "post", "type": type_result}
+
+
+@router.put("/updatename", status_code=HTTP_200_OK, response_model=TypeResult, tags=["types"])
+async def update_name(
+    data: TypeUpdateNameModel,
+    db_async_session: AsyncSession = Depends(dep_db_async_session),
+    user: User = Depends(dep_user),
+):
+    """
+    Update the name for the type with the requested UUID
+    """
+    if not user.headuser:
+        raise HTTPException(
+            HTTP_403_FORBIDDEN,
+            "Access to this endpoint is now allowed for users with inadequate access levels",
+        )
+    query = select(Type).filter_by(uuid=data.uuid).options(selectinload("*"))
+    result = await db_async_session.execute(query)
+    type_data = result.scalar_one_or_none()
+    if not type_data:
+        raise HTTPException(
+            HTTP_404_NOT_FOUND, f"Type with the requested UUID '{data.uuid}' was not found"
+        )
+    if type_data.name == data.name:
+        raise HTTPException(
+            HTTP_422_UNPROCESSABLE_ENTITY,
+            f"Type already has the same name '{data.name}' as requested for changing",
+        )
+    else:
+        type_data.name = data.name
+    try:
+        await db_async_session.flush()
+    except IntegrityError as expt:
+        logrdata.logrobjc.warning("Uniqueness constraint failed - Please try again")
+        logrdata.logrobjc.warning(str(expt))
+        raise HTTPException(HTTP_409_CONFLICT, "Uniqueness constraint failed - Please try again")
+    return {"action": "put", "type": type_data}
