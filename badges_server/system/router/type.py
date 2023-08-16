@@ -39,6 +39,23 @@ async def select_type_by_name(
     return {"action": "get", "type": type_data}
 
 
+@router.get("/uuid/{uuid}", status_code=HTTP_200_OK, response_model=TypeResult, tags=["types"])
+async def select_user_by_uuid(
+    uuid: str, db_async_session: AsyncSession = Depends(dep_db_async_session)
+):
+    """
+    Return the type with the specified UUID
+    """
+    query = select(Type).filter_by(uuid=uuid).options(selectinload("*"))
+    result = await db_async_session.execute(query)
+    type_data = result.scalar_one_or_none()
+    if not type_data:
+        raise HTTPException(
+            HTTP_404_NOT_FOUND, f"Type with the requested UUID '{uuid}' was not found"
+        )
+    return {"action": "get", "type": type_data}
+
+
 @router.post("/create", status_code=HTTP_201_CREATED, response_model=TypeResult, tags=["types"])
 async def create_type(
     data: TypeCreateModel,
