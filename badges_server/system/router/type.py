@@ -22,6 +22,23 @@ from badges_server.system.models.type import TypeCreateModel, TypeModelExternal,
 router = APIRouter(prefix="/types")
 
 
+@router.get("/name/{name}", status_code=HTTP_200_OK, response_model=TypeResult, tags=["types"])
+async def select_type_by_name(
+    name: str, db_async_session: AsyncSession = Depends(dep_db_async_session)
+):
+    """
+    Return the type with the specified name
+    """
+    query = select(Type).filter_by(name=name).options(selectinload("*"))
+    result = await db_async_session.execute(query)
+    type_data = result.scalar_one_or_none()
+    if not type_data:
+        raise HTTPException(
+            HTTP_404_NOT_FOUND, f"Type with the requested name '{name}' was not found"
+        )
+    return {"action": "get", "type": type_data}
+
+
 @router.get("/uuid/{uuid}", status_code=HTTP_200_OK, response_model=TypeResult, tags=["types"])
 async def select_user_by_uuid(
     uuid: str, db_async_session: AsyncSession = Depends(dep_db_async_session)
