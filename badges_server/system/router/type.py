@@ -22,6 +22,7 @@ from badges_server.system.models.type import (
     TypeCreateModel,
     TypeModelExternal,
     TypeResult,
+    TypeUpdateDescriptionModel,
     TypeUpdateNameModel,
 )
 
@@ -121,6 +122,43 @@ async def update_name(
         )
     else:
         type_data.name = data.name
+    try:
+        await db_async_session.flush()
+    except IntegrityError as expt:
+        logrdata.logrobjc.warning("Uniqueness constraint failed - Please try again")
+        logrdata.logrobjc.warning(str(expt))
+        raise HTTPException(HTTP_409_CONFLICT, "Uniqueness constraint failed - Please try again")
+    return {"action": "put", "type": type_data}
+
+
+@router.put("/updatedesc", status_code=HTTP_200_OK, response_model=TypeResult, tags=["types"])
+async def update_description(
+    data: TypeUpdateDescriptionModel,
+    db_async_session: AsyncSession = Depends(dep_db_async_session),
+    user: User = Depends(dep_user),
+):
+    """
+    Update the description for the type with the requested UUID
+    """
+    if not user.headuser:
+        raise HTTPException(
+            HTTP_403_FORBIDDEN,
+            "Access to this endpoint is now allowed for users with inadequate access levels",
+        )
+    query = select(Type).filter_by(uuid=data.uuid).options(selectinload("*"))
+    result = await db_async_session.execute(query)
+    type_data = result.scalar_one_or_none()
+    if not type_data:
+        raise HTTPException(
+            HTTP_404_NOT_FOUND, f"Type with the requested UUID '{data.uuid}' was not found"
+        )
+    if type_data.desc == data.desc:
+        raise HTTPException(
+            HTTP_422_UNPROCESSABLE_ENTITY,
+            f"Type already has the same description '{data.desc}' as requested for changing",
+        )
+    else:
+        type_data.desc = data.desc
     try:
         await db_async_session.flush()
     except IntegrityError as expt:
