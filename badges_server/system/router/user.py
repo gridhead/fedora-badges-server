@@ -157,7 +157,12 @@ async def update_permission(
             )
         else:
             user_data.headuser = False
-    await db_async_session.flush()
+    try:
+        await db_async_session.flush()
+    except IntegrityError as expt:
+        logrdata.logrobjc.warning("Uniqueness constraint failed - Please try again")
+        logrdata.logrobjc.warning(str(expt))
+        raise HTTPException(HTTP_409_CONFLICT, "Uniqueness constraint failed - Please try again")
     return {"action": "put", "user": user_data}
 
 
@@ -198,7 +203,12 @@ async def update_activity(
             )
         else:
             user_data.withdraw = False
-    await db_async_session.flush()
+    try:
+        await db_async_session.flush()
+    except IntegrityError as expt:
+        logrdata.logrobjc.warning("Uniqueness constraint failed - Please try again")
+        logrdata.logrobjc.warning(str(expt))
+        raise HTTPException(HTTP_409_CONFLICT, "Uniqueness constraint failed - Please try again")
     return {"action": "put", "user": user_data}
 
 
@@ -224,7 +234,12 @@ async def update_description(
             HTTP_404_NOT_FOUND, f"User with the requested UUID '{data.uuid}' was not found"
         )
     user_data.desc = data.desc
-    await db_async_session.flush()
+    try:
+        await db_async_session.flush()
+    except IntegrityError as expt:
+        logrdata.logrobjc.warning("Uniqueness constraint failed - Please try again")
+        logrdata.logrobjc.warning(str(expt))
+        raise HTTPException(HTTP_409_CONFLICT, "Uniqueness constraint failed - Please try again")
     return {"action": "put", "user": user_data}
 
 
@@ -250,5 +265,10 @@ async def update_email_address(
             HTTP_404_NOT_FOUND, f"User with the requested UUID '{data.uuid}' was not found"
         )
     user_data.mailaddr = data.mailaddr
-    await db_async_session.flush()
+    try:
+        await db_async_session.flush()
+    except IntegrityError as expt:
+        logrdata.logrobjc.warning("Uniqueness constraint failed - Please try again")
+        logrdata.logrobjc.warning(str(expt))
+        raise HTTPException(HTTP_409_CONFLICT, "Uniqueness constraint failed - Please try again")
     return {"action": "put", "user": user_data}
