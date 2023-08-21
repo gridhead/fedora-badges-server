@@ -9,6 +9,7 @@ class APIResultAction(str, Enum):
     get = "get"
     post = "post"
     put = "put"
+    delete = "delete"
 
 
 class APIResult(BaseModel, ABC):
