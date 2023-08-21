@@ -1,13 +1,14 @@
 from uuid import uuid4
 
 from fastapi import APIRouter, Depends, HTTPException
-from sqlalchemy import select
+from sqlalchemy import delete, select
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload
 from starlette.status import (
     HTTP_200_OK,
     HTTP_201_CREATED,
+    HTTP_202_ACCEPTED,
     HTTP_403_FORBIDDEN,
     HTTP_404_NOT_FOUND,
     HTTP_409_CONFLICT,
@@ -166,3 +167,39 @@ async def update_description(
         logrdata.logrobjc.warning(str(expt))
         raise HTTPException(HTTP_409_CONFLICT, "Uniqueness constraint failed - Please try again")
     return {"action": "put", "type": type_data}
+
+
+@router.delete(
+    "/uuid/{uuid}", status_code=HTTP_202_ACCEPTED, response_model=TypeResult, tags=["types"]
+)
+async def delete_type(
+    uuid: str,
+    db_async_session: AsyncSession = Depends(dep_db_async_session),
+    user: User = Depends(dep_user),
+):
+    """
+    Delete the description for the type with the requested UUID
+    """
+    if not user.headuser:
+        raise HTTPException(
+            HTTP_403_FORBIDDEN,
+            "Access to this endpoint is now allowed for users with inadequate access levels",
+        )
+    query = select(Type).filter_by(uuid=uuid).options(selectinload("*"))
+    result = await db_async_session.execute(query)
+    type_data = result.scalar_one_or_none()
+    if not type_data:
+        raise HTTPException(
+            HTTP_404_NOT_FOUND, f"Type with the requested UUID '{uuid}' was not found"
+        )
+    # query = delete(Type).filter_by(uuid=uuid).options(selectinload("*"))
+    query = delete(Type).filter_by(id=type_data.id)
+    await db_async_session.execute(query)
+    print(type_data.uuid, type_data.name, type_data.desc)
+    try:
+        await db_async_session.flush()
+    except IntegrityError as expt:
+        logrdata.logrobjc.warning("Uniqueness constraint failed - Please try again")
+        logrdata.logrobjc.warning(str(expt))
+        raise HTTPException(HTTP_409_CONFLICT, "Uniqueness constraint failed - Please try again")
+    return {"action": "delete", "type": type_data}
