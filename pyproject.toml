@@ -33,6 +33,10 @@ pytest-isort = "^3.0.0"
 tox = "^4.0.0"
 bandit = "^1.7.4"
 pre-commit = "^3.3.3"
+pytest-asyncio = "^0.21.1"
+pytest-cov = "^4.1.0"
+pytest-mock = "^3.11.1"
+ruff = "^0.0.285"
 
 [tool.pytest.ini_options]
 addopts = "--black --isort --flake8"
@@ -65,6 +69,13 @@ exclude = '''
 [tool.ruff]
 line-length = 100
 fix = true
+
+[tool.coverage.report]
+fail_under = 0
+exclude_lines = [
+    "pragma: no cover",
+]
+omit = []
 
 [build-system]
 requires = ["poetry-core"]
