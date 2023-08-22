@@ -1,5 +1,5 @@
 ---
-- name: Install RPM packages
+- name: Install the application RPM packages
   dnf:
       name:
       - gcc
@@ -8,22 +8,17 @@
       - postgresql-devel
       - python3-cryptography
       - python3-devel
-      - python3-flask
-      - python3-pip
+      - poetry
       - vim
       state: present
 
-- name: Install poetry Python package
-  become_user: root
-  command: pip install poetry
-
-- name: install python deps with poetry
+- name: Install the project dependencies using Poetry
   become_user: vagrant
   command:
     cmd: poetry install
     chdir: /vagrant
 
-- name: Install the .bashrc
+- name: Install the .bashrc file
   copy:
     src: .bashrc
     dest: /home/vagrant/.bashrc
@@ -31,7 +26,7 @@
     owner: vagrant
     group: vagrant
 
-- name: Install the config
+- name: Install the configuration file
   copy:
     src: config.py
     dest: /home/vagrant/config.py
@@ -39,20 +34,19 @@
     owner: vagrant
     group: vagrant
 
-- name: setup badges_server
+- name: Setup the badges_server database schema
   become_user: vagrant
   command:
     cmd: poetry run badges_server -c /home/vagrant/config.py setup
     chdir: /vagrant/
 
-
-- name: Install the systemd unit files for badges server service
+- name: Install the files for badges_server service in Systemd
   copy:
     src: badges_server.service
     dest: /etc/systemd/system/badges_server.service
     mode: 0644
 
-- name: Start badges server service using systemd
+- name: Start the badges_server service using Systemd
   systemd:
     state: started
     name: badges_server
