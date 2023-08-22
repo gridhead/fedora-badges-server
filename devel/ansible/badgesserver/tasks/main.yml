@@ -1,0 +1,60 @@
+---
+- name: Install RPM packages
+  dnf:
+      name:
+      - gcc
+      - git
+      - libffi-devel
+      - postgresql-devel
+      - python3-cryptography
+      - python3-devel
+      - python3-flask
+      - python3-pip
+      - vim
+      state: present
+
+- name: Install poetry Python package
+  become_user: root
+  command: pip install poetry
+
+- name: install python deps with poetry
+  become_user: vagrant
+  command:
+    cmd: poetry install
+    chdir: /vagrant
+
+- name: Install the .bashrc
+  copy:
+    src: .bashrc
+    dest: /home/vagrant/.bashrc
+    mode: 0644
+    owner: vagrant
+    group: vagrant
+
+- name: Install the config
+  copy:
+    src: config.py
+    dest: /home/vagrant/config.py
+    mode: 0644
+    owner: vagrant
+    group: vagrant
+
+- name: setup badges_server
+  become_user: vagrant
+  command:
+    cmd: poetry run badges_server -c /home/vagrant/config.py setup
+    chdir: /vagrant/
+
+
+- name: Install the systemd unit files for badges server service
+  copy:
+    src: badges_server.service
+    dest: /etc/systemd/system/badges_server.service
+    mode: 0644
+
+- name: Start badges server service using systemd
+  systemd:
+    state: started
+    name: badges_server
+    daemon_reload: yes
+    enabled: yes
