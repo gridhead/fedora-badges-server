@@ -66,7 +66,10 @@ wsgiconf = {
         },
         "access": {
             "()": "uvicorn.logging.AccessFormatter",
-            "fmt": "[FPBS] %(asctime)s [%(levelname)s] %(client_addr)s - '%(request_line)s' %(status_code)s",
+            "fmt": (
+                "[FPBS] %(asctime)s [%(levelname)s] %(client_addr)s"
+                " - '%(request_line)s' %(status_code)s"
+            ),
             "datefmt": "[%Y-%m-%d %I:%M:%S %z]",
         },
     },
