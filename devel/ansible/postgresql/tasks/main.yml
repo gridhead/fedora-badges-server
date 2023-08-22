@@ -1,0 +1,54 @@
+---
+- name: Install the database RPM packages
+  dnf:
+    name:
+      - python3-psycopg2
+      - postgresql-server
+      - postgresql-devel
+    state: present
+
+- name: Setup the PostgreSQL database
+  command: postgresql-setup --initdb
+  args:
+    creates: /var/lib/pgsql/data/postgresql.conf
+
+- name: Configure the access for PostgreSQL database
+  postgresql_pg_hba:
+    dest: /var/lib/pgsql/data/pg_hba.conf
+    contype: host
+    databases: all
+    users: all
+    address: "{{item}}"
+    method: md5
+  loop:
+    - 127.0.0.1/32
+    - ::1/128
+
+- name: Start the PostgreSQL service
+  service:
+    name: postgresql
+    enabled: yes
+    state: started
+
+- block:
+    - name: Create the PostgreSQL user
+      postgresql_user:
+        name: badges
+        password: badges
+
+    - name: Create the PostgreSQL database
+      postgresql_db:
+        name: badges
+        owner: badges
+
+  become: yes
+  become_user: postgres
+  become_method: sudo
+
+- name: Make the connection convenient
+  copy:
+    dest: /home/vagrant/.pgpass
+    content: "*:*:messages:badges:badges\n"
+    owner: vagrant
+    group: vagrant
+    mode: 0600
