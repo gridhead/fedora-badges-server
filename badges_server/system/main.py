@@ -7,7 +7,7 @@ from badges_server import __vers__, readconf
 from badges_server.config import logrdata, standard
 from badges_server.database import data
 from badges_server.exceptions import BadgesServerConfigurationError
-from badges_server.system.router import access, type, user
+from badges_server.system.router import access, accolade, type, user
 
 desc = "Fedora Badges Server"
 
@@ -36,6 +36,7 @@ PREFIX = "/api/v1"
 app.include_router(user.router, prefix=PREFIX)
 app.include_router(access.router, prefix=PREFIX)
 app.include_router(type.router, prefix=PREFIX)
+app.include_router(accolade.router, prefix=PREFIX)
 
 
 @app.on_event("startup")
