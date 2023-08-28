@@ -28,6 +28,15 @@ servport = 8080
 # Automatically reload if the code is changed
 cgreload = True
 
+# Accepted storage limit for the uploaded asset in MiB
+upslimit = 0.1
+
+# Accepted content type for the uploaded asset in MIME type
+conttype = "image/png"
+
+# Absolute storage location for the uploaded assets
+drctloca = "/tmp/badgesdb/"
+
 # The default configuration for service logging
 logrconf = {
     "version": 1,
