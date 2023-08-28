@@ -192,10 +192,8 @@ async def delete_type(
         raise HTTPException(
             HTTP_404_NOT_FOUND, f"Type with the requested UUID '{uuid}' was not found"
         )
-    # query = delete(Type).filter_by(uuid=uuid).options(selectinload("*"))
     query = delete(Type).filter_by(id=type_data.id)
     await db_async_session.execute(query)
-    print(type_data.uuid, type_data.name, type_data.desc)
     try:
         await db_async_session.flush()
     except IntegrityError as expt:
