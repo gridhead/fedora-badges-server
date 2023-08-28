@@ -32,36 +32,4 @@ class AccoladeModelInternal(AccoladeModelExternal):
 
 
 class AccoladeResult(APIResult):
-    user: AccoladeModelExternal
-
-
-class AccoladeCreateModel(BaseModel):
-    name: str
-    desc: Optional[str]
-    criteria: Optional[str]
-    sequence: Optional[int] = 0
-    type_uuid: str
-    tags: Optional[str]
-    uuid: Optional[str]
-
-
-"""
-class AccoladeUpdatePermissionModel(BaseModel):
-    uuid: str
-    head: bool
-
-
-class AccoladeUpdateActivityModel(BaseModel):
-    uuid: str
-    withdraw: bool
-
-
-class AccoladeUpdateDescriptionModel(BaseModel):
-    uuid: str
-    desc: str
-
-
-class AccoladeUpdateEmailAddressModel(BaseModel):
-    uuid: str
-    mailaddr: str
-"""
+    accolade: AccoladeModelExternal
