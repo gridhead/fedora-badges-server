@@ -53,6 +53,25 @@ async def show_file_by_uuid(
     return FileResponse(filepath)
 
 
+@router.get(
+    "/uuid/{uuid}", status_code=HTTP_200_OK, response_model=AccoladeResult, tags=["accolades"]
+)
+async def select_accolade_by_uuid(
+    uuid: str, db_async_session: AsyncSession = Depends(dep_db_async_session)
+):
+    """
+    Return the accolade with the specified UUID
+    """
+    query = select(Accolade).filter_by(uuid=uuid).options(selectinload("*"))
+    result = await db_async_session.execute(query)
+    user_data = result.scalar_one_or_none()
+    if not user_data:
+        raise HTTPException(
+            HTTP_404_NOT_FOUND, f"Accolade with the requested UUID '{uuid}' was not found"
+        )
+    return {"action": "get", "accolade": user_data}
+
+
 @router.post(
     "/create", status_code=HTTP_201_CREATED, response_model=AccoladeResult, tags=["accolades"]
 )
