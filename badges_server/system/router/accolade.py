@@ -1,19 +1,22 @@
-from os.path import join
+from os.path import exists, join
 from typing import Annotated
 from uuid import uuid4
 
 from fastapi import APIRouter, Depends, Form, HTTPException, UploadFile
+from fastapi.responses import FileResponse
 from sqlalchemy import select
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload
 from starlette.status import (
+    HTTP_200_OK,
     HTTP_201_CREATED,
     HTTP_403_FORBIDDEN,
     HTTP_404_NOT_FOUND,
     HTTP_409_CONFLICT,
     HTTP_413_REQUEST_ENTITY_TOO_LARGE,
     HTTP_422_UNPROCESSABLE_ENTITY,
+    HTTP_424_FAILED_DEPENDENCY,
 )
 
 from badges_server.config import logrdata, standard
@@ -23,6 +26,31 @@ from badges_server.system.database import dep_db_async_session
 from badges_server.system.models.accolade import AccoladeModelExternal, AccoladeResult
 
 router = APIRouter(prefix="/accolades")
+
+
+@router.get(
+    "/file/{uuid}", status_code=HTTP_200_OK, response_class=FileResponse, tags=["accolades"]
+)
+async def show_file_by_uuid(
+    uuid: str, db_async_session: AsyncSession = Depends(dep_db_async_session)
+):
+    """
+    Return the file for the accolade with the specified UUID
+    """
+    query = select(Accolade).filter_by(uuid=uuid).options(selectinload("*"))
+    result = await db_async_session.execute(query)
+    accolade_data = result.scalar_one_or_none()
+    if not accolade_data:
+        raise HTTPException(
+            HTTP_404_NOT_FOUND, f"Accolade with the requested UUID '{uuid}' was not found"
+        )
+    filepath = join(standard.drctloca, f"{accolade_data.uuid}.png")
+    if not exists(filepath):
+        raise HTTPException(
+            HTTP_424_FAILED_DEPENDENCY,
+            f"File assets for the accolade with the requested UUID '{uuid}' was not found on the storage device",  # noqa: E501
+        )
+    return FileResponse(filepath)
 
 
 @router.post(
