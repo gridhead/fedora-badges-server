@@ -8,6 +8,7 @@ from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload
 from starlette.status import (
+    HTTP_200_OK,
     HTTP_201_CREATED,
     HTTP_403_FORBIDDEN,
     HTTP_404_NOT_FOUND,
@@ -23,6 +24,25 @@ from badges_server.system.database import dep_db_async_session
 from badges_server.system.models.accolade import AccoladeModelExternal, AccoladeResult
 
 router = APIRouter(prefix="/accolades")
+
+
+@router.get(
+    "/uuid/{uuid}", status_code=HTTP_200_OK, response_model=AccoladeResult, tags=["accolades"]
+)
+async def select_accolade_by_uuid(
+    uuid: str, db_async_session: AsyncSession = Depends(dep_db_async_session)
+):
+    """
+    Return the accolade with the specified UUID
+    """
+    query = select(Accolade).filter_by(uuid=uuid).options(selectinload("*"))
+    result = await db_async_session.execute(query)
+    user_data = result.scalar_one_or_none()
+    if not user_data:
+        raise HTTPException(
+            HTTP_404_NOT_FOUND, f"Accolade with the requested UUID '{uuid}' was not found"
+        )
+    return {"action": "get", "accolade": user_data}
 
 
 @router.post(
