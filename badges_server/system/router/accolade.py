@@ -23,9 +23,65 @@ from badges_server.config import logrdata, standard
 from badges_server.database.objs import Accolade, Type, User
 from badges_server.system.auth import dep_user
 from badges_server.system.database import dep_db_async_session
-from badges_server.system.models.accolade import AccoladeModelExternal, AccoladeResult
+from badges_server.system.models.accolade import (
+    AccoladeModelExternal,
+    AccoladeResult,
+    AccoladeSearchResult,
+    AccoladeSingleTypeSearchResult,
+)
 
 router = APIRouter(prefix="/accolades")
+
+
+@router.get(
+    "/search/{text}",
+    status_code=HTTP_200_OK,
+    response_model=AccoladeSearchResult,
+    tags=["accolades"],
+)
+async def search_by_text(text: str, db_async_session: AsyncSession = Depends(dep_db_async_session)):
+    """
+    Return the results from searching accolades with the specified text
+    """
+
+    """
+    TODO: Implement a proper full-text search instead of
+        the makeshift approach using the SQL LIKE clause
+    """
+
+    query_name = select(Accolade).filter(Accolade.name.like(f"%{text}%")).options(selectinload("*"))
+    result_name = await db_async_session.execute(query_name)
+    data_name = result_name.scalars().fetchall()
+    objc_name = AccoladeSingleTypeSearchResult()
+    objc_name.quantity, objc_name.result = len(data_name), data_name
+
+    query_desc = select(Accolade).filter(Accolade.desc.like(f"%{text}%")).options(selectinload("*"))
+    result_desc = await db_async_session.execute(query_desc)
+    data_desc = result_desc.scalars().fetchall()
+    objc_desc = AccoladeSingleTypeSearchResult()
+    objc_desc.quantity, objc_desc.result = len(data_desc), data_desc
+
+    query_tags = select(Accolade).filter(Accolade.tags.like(f"%{text}%")).options(selectinload("*"))
+    result_tags = await db_async_session.execute(query_tags)
+    data_tags = result_tags.scalars().fetchall()
+    objc_tags = AccoladeSingleTypeSearchResult()
+    objc_tags.quantity, objc_tags.result = len(data_tags), data_tags
+
+    quantity = len(data_name) + len(data_desc) + len(data_tags)
+    if quantity == 0:
+        raise HTTPException(
+            HTTP_404_NOT_FOUND, f"Accolades with the substring '{text}' were not found"
+        )
+
+    result = AccoladeSearchResult()
+    result.action, result.quantity, result.match_name, result.match_desc, result_tags = (
+        "get",
+        quantity,
+        objc_name,
+        objc_desc,
+        objc_tags,
+    )
+    return result
 
 
 @router.get(
