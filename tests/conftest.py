@@ -1,11 +1,15 @@
+from unittest import mock
+from uuid import uuid4
+
 import psycopg
 import pytest
 import pytest_postgresql
 from httpx import AsyncClient
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, select
 from sqlalchemy.engine.url import URL
 from sqlalchemy.ext.asyncio import create_async_engine
 
+import badges_server.system.main
 from badges_server.database.data import (
     async_session_maker,
     baseobjc,
@@ -14,12 +18,11 @@ from badges_server.database.data import (
     sync_session_maker,
 )
 from badges_server.database.objs import User
-from badges_server.system import main
+from badges_server.system.auth import dep_user
 
 # Database fixtures
+# these are adapted and reused from the duffy tests
 
-# Like postgresql_proc, but scoped for test functions. This makes testing slower but ensures that
-# tests don't affect each other, especially if conducted in parallel.
 postgresql_function_proc = pytest.fixture(scope="function")(
     pytest_postgresql.factories.postgresql_proc().__wrapped__
 )
@@ -138,8 +141,25 @@ async def db_async_session(db_async_model_initialized):
 def _test_data():
     data = set()
 
-    user = User(username="testuser", mailaddr="testuser@badges.test")
-    data.add(user)
+    testuser = User(
+        username="testuser",
+        mailaddr="testuser@badges.test",
+        desc="",
+        withdraw=False,
+        headuser=False,
+        uuid=uuid4().hex[0:8],
+    )
+    data.add(testuser)
+
+    headuser = User(
+        username="headuser",
+        mailaddr="headuser@badges.test",
+        desc="",
+        withdraw=False,
+        headuser=True,
+        uuid=uuid4().hex[0:8],
+    )
+    data.add(headuser)
 
     return data
 
@@ -168,5 +188,27 @@ async def db_async_test_data(db_async_session):
 
 @pytest.fixture
 async def client(db_async_session, db_async_test_data):
-    async with AsyncClient(app=main.app, base_url="http://badges-server.example.test") as client:
+    async with AsyncClient(
+        app=badges_server.system.main.app, base_url="http://badges-server.example.test"
+    ) as client:
         yield client
+
+
+@pytest.fixture
+async def authenticate_user(authenticate_user_username, db_async_session):
+    user = None
+
+    if authenticate_user_username:
+        user = (
+            await db_async_session.execute(
+                select(User).filter_by(username=authenticate_user_username)
+            )
+        ).scalar_one_or_none()
+
+    def get_user():
+        return user
+
+    with mock.patch.dict(badges_server.system.main.app.dependency_overrides):
+        badges_server.system.main.app.dependency_overrides[dep_user] = get_user
+
+        yield user
