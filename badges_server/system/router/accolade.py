@@ -11,6 +11,7 @@ from sqlalchemy.orm import selectinload
 from starlette.status import (
     HTTP_200_OK,
     HTTP_201_CREATED,
+    HTTP_202_ACCEPTED,
     HTTP_403_FORBIDDEN,
     HTTP_404_NOT_FOUND,
     HTTP_409_CONFLICT,
@@ -28,6 +29,7 @@ from badges_server.system.models.accolade import (
     AccoladeResult,
     AccoladeSearchResult,
     AccoladeSingleTypeSearchResult,
+    AccoladeUpdateNameModel,
 )
 
 router = APIRouter(prefix="/accolades")
@@ -193,3 +195,41 @@ async def create_accolade(
         logrdata.logrobjc.warning(str(expt))
         raise HTTPException(HTTP_409_CONFLICT, "Uniqueness constraint failed - Please try again")
     return {"action": "post", "accolade": accolade_result}
+
+
+@router.put(
+    "/updatename/", status_code=HTTP_202_ACCEPTED, response_model=AccoladeResult, tags=["accolades"]
+)
+async def update_name(
+    data: AccoladeUpdateNameModel,
+    db_async_session: AsyncSession = Depends(dep_db_async_session),
+    user: User = Depends(dep_user),
+):
+    """
+    Update the name for the accolade with the requested UUID
+    """
+    if not user.headuser:
+        raise HTTPException(
+            HTTP_403_FORBIDDEN,
+            "Access to this endpoint is now allowed for users with inadequate access levels",
+        )
+    query = select(Accolade).filter_by(uuid=data.uuid).options(selectinload("*"))
+    result = await db_async_session.execute(query)
+    accolade_data = result.scalar_one_or_none()
+    if not accolade_data:
+        raise HTTPException(
+            HTTP_404_NOT_FOUND, f"Accolade with the requested UUID '{data.uuid}' was not found"
+        )
+    if accolade_data.name == data.name:
+        raise HTTPException(
+            HTTP_422_UNPROCESSABLE_ENTITY,
+            f"Accolade already has the same name '{data.name}' as requested for changing",
+        )
+    accolade_data.name = data.name
+    try:
+        await db_async_session.flush()
+    except IntegrityError as expt:
+        logrdata.logrobjc.warning("Uniqueness constraint failed - Please try again")
+        logrdata.logrobjc.warning(str(expt))
+        raise HTTPException(HTTP_409_CONFLICT, "Uniqueness constraint failed - Please try again")
+    return {"action": "put", "accolade": accolade_data}

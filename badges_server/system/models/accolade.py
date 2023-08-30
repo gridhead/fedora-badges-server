@@ -45,3 +45,8 @@ class AccoladeSearchResult(APIResult):
     match_name: AccoladeSingleTypeSearchResult = AccoladeSingleTypeSearchResult()
     match_desc: AccoladeSingleTypeSearchResult = AccoladeSingleTypeSearchResult()
     match_tags: AccoladeSingleTypeSearchResult = AccoladeSingleTypeSearchResult()
+
+
+class AccoladeUpdateNameModel(BaseModel):
+    uuid: str
+    name: str
