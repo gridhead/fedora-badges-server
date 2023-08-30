@@ -40,6 +40,7 @@ pytest-mock = "^3.11.1"
 ruff = "^0.0.285"
 pytest-postgresql = "^5.0.0"
 httpx = "^0.24.1"
+gevent = "^23.7.0"
 
 [tool.pytest.ini_options]
 addopts = "--black --isort --flake8"
@@ -79,6 +80,9 @@ exclude_lines = [
     "pragma: no cover",
 ]
 omit = []
+
+[tool.coverage.run]
+concurrency = ["gevent"]
 
 [build-system]
 requires = ["poetry-core"]
