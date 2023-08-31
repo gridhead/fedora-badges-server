@@ -31,6 +31,7 @@ from badges_server.system.models.accolade import (
     AccoladeSingleTypeSearchResult,
     AccoladeUpdateDescModel,
     AccoladeUpdateNameModel,
+    AccoladeUpdateSequenceModel,
     AccoladeUpdateTagsModel,
 )
 
@@ -306,6 +307,44 @@ async def update_tags(
             f"Accolade already has the same set of tags '{data.tags}' as requested for changing",
         )
     accolade_data.tags = data.tags
+    try:
+        await db_async_session.flush()
+    except IntegrityError as expt:
+        logrdata.logrobjc.warning("Uniqueness constraint failed - Please try again")
+        logrdata.logrobjc.warning(str(expt))
+        raise HTTPException(HTTP_409_CONFLICT, "Uniqueness constraint failed - Please try again")
+    return {"action": "put", "accolade": accolade_data}
+
+
+@router.put(
+    "/updatesqnc/", status_code=HTTP_202_ACCEPTED, response_model=AccoladeResult, tags=["accolades"]
+)
+async def update_sequence(
+    data: AccoladeUpdateSequenceModel,
+    db_async_session: AsyncSession = Depends(dep_db_async_session),
+    user: User = Depends(dep_user),
+):
+    """
+    Update the sequence for the accolade with the requested UUID within a certain type
+    """
+    if not user.headuser:
+        raise HTTPException(
+            HTTP_403_FORBIDDEN,
+            "Access to this endpoint is now allowed for users with inadequate access levels",
+        )
+    query = select(Accolade).filter_by(uuid=data.uuid).options(selectinload("*"))
+    result = await db_async_session.execute(query)
+    accolade_data = result.scalar_one_or_none()
+    if not accolade_data:
+        raise HTTPException(
+            HTTP_404_NOT_FOUND, f"Accolade with the requested UUID '{data.uuid}' was not found"
+        )
+    if accolade_data.sequence == data.sequence:
+        raise HTTPException(
+            HTTP_422_UNPROCESSABLE_ENTITY,
+            f"Accolade already has the same sequence '{data.sequence}' as requested for changing",
+        )
+    accolade_data.sequence = data.sequence
     try:
         await db_async_session.flush()
     except IntegrityError as expt:

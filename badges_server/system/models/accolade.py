@@ -60,3 +60,8 @@ class AccoladeUpdateDescModel(BaseModel):
 class AccoladeUpdateTagsModel(BaseModel):
     uuid: str
     tags: str
+
+
+class AccoladeUpdateSequenceModel(BaseModel):
+    uuid: str
+    sequence: int
