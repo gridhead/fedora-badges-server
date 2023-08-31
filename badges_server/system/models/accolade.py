@@ -55,3 +55,8 @@ class AccoladeUpdateNameModel(BaseModel):
 class AccoladeUpdateDescModel(BaseModel):
     uuid: str
     desc: str
+
+
+class AccoladeUpdateTagsModel(BaseModel):
+    uuid: str
+    tags: str
