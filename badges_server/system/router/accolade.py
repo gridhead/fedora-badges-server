@@ -29,6 +29,7 @@ from badges_server.system.models.accolade import (
     AccoladeResult,
     AccoladeSearchResult,
     AccoladeSingleTypeSearchResult,
+    AccoladeUpdateDescModel,
     AccoladeUpdateNameModel,
 )
 
@@ -226,6 +227,44 @@ async def update_name(
             f"Accolade already has the same name '{data.name}' as requested for changing",
         )
     accolade_data.name = data.name
+    try:
+        await db_async_session.flush()
+    except IntegrityError as expt:
+        logrdata.logrobjc.warning("Uniqueness constraint failed - Please try again")
+        logrdata.logrobjc.warning(str(expt))
+        raise HTTPException(HTTP_409_CONFLICT, "Uniqueness constraint failed - Please try again")
+    return {"action": "put", "accolade": accolade_data}
+
+
+@router.put(
+    "/updatedesc/", status_code=HTTP_202_ACCEPTED, response_model=AccoladeResult, tags=["accolades"]
+)
+async def update_desc(
+    data: AccoladeUpdateDescModel,
+    db_async_session: AsyncSession = Depends(dep_db_async_session),
+    user: User = Depends(dep_user),
+):
+    """
+    Update the description for the accolade with the requested UUID
+    """
+    if not user.headuser:
+        raise HTTPException(
+            HTTP_403_FORBIDDEN,
+            "Access to this endpoint is now allowed for users with inadequate access levels",
+        )
+    query = select(Accolade).filter_by(uuid=data.uuid).options(selectinload("*"))
+    result = await db_async_session.execute(query)
+    accolade_data = result.scalar_one_or_none()
+    if not accolade_data:
+        raise HTTPException(
+            HTTP_404_NOT_FOUND, f"Accolade with the requested UUID '{data.uuid}' was not found"
+        )
+    if accolade_data.desc == data.desc:
+        raise HTTPException(
+            HTTP_422_UNPROCESSABLE_ENTITY,
+            f"Accolade already has the same description '{data.desc}' as requested for changing",
+        )
+    accolade_data.desc = data.desc
     try:
         await db_async_session.flush()
     except IntegrityError as expt:

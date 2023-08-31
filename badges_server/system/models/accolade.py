@@ -50,3 +50,8 @@ class AccoladeSearchResult(APIResult):
 class AccoladeUpdateNameModel(BaseModel):
     uuid: str
     name: str
+
+
+class AccoladeUpdateDescModel(BaseModel):
+    uuid: str
+    desc: str
