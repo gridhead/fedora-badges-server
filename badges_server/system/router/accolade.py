@@ -122,12 +122,12 @@ async def select_accolade_by_uuid(
     """
     query = select(Accolade).filter_by(uuid=uuid).options(selectinload("*"))
     result = await db_async_session.execute(query)
-    user_data = result.scalar_one_or_none()
-    if not user_data:
+    accolade_data = result.scalar_one_or_none()
+    if not accolade_data:
         raise HTTPException(
             HTTP_404_NOT_FOUND, f"Accolade with the requested UUID '{uuid}' was not found"
         )
-    return {"action": "get", "accolade": user_data}
+    return {"action": "get", "accolade": accolade_data}
 
 
 @router.post(
