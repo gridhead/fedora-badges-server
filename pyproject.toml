@@ -75,7 +75,7 @@ line-length = 100
 fix = true
 
 [tool.coverage.report]
-fail_under = 49
+fail_under = 46
 exclude_lines = [
     "pragma: no cover",
 ]

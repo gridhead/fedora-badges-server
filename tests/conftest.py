@@ -1,5 +1,5 @@
 from unittest import mock
-from uuid import uuid4
+from uuid import UUID
 
 import psycopg
 import pytest
@@ -147,7 +147,7 @@ def _test_data():
         desc="",
         withdraw=False,
         headuser=False,
-        uuid=uuid4().hex[0:8],
+        uuid=UUID(hex="aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa").hex[0:8],
     )
     data.add(testuser)
 
@@ -157,9 +157,19 @@ def _test_data():
         desc="",
         withdraw=False,
         headuser=True,
-        uuid=uuid4().hex[0:8],
+        uuid=UUID(hex="bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb").hex[0:8],
     )
     data.add(headuser)
+
+    testuser_withdrawn = User(
+        username="testuser_withdrawn",
+        mailaddr="testuser_withdrawn@badges.test",
+        desc="",
+        withdraw=True,
+        headuser=False,
+        uuid=UUID(hex="cccccccccccccccccccccccccccccccc").hex[0:8],
+    )
+    data.add(testuser_withdrawn)
 
     return data
 
