@@ -54,19 +54,25 @@ async def search_by_text(text: str, db_async_session: AsyncSession = Depends(dep
         the makeshift approach using the SQL LIKE clause
     """
 
-    query_name = select(Accolade).filter(Accolade.name.like(f"%{text}%")).options(selectinload("*"))
+    query_name = (
+        select(Accolade).filter(Accolade.name.ilike(f"%{text}%")).options(selectinload("*"))
+    )
     result_name = await db_async_session.execute(query_name)
     data_name = result_name.scalars().fetchall()
     objc_name = AccoladeSingleTypeSearchResult()
     objc_name.quantity, objc_name.result = len(data_name), data_name
 
-    query_desc = select(Accolade).filter(Accolade.desc.like(f"%{text}%")).options(selectinload("*"))
+    query_desc = (
+        select(Accolade).filter(Accolade.desc.ilike(f"%{text}%")).options(selectinload("*"))
+    )
     result_desc = await db_async_session.execute(query_desc)
     data_desc = result_desc.scalars().fetchall()
     objc_desc = AccoladeSingleTypeSearchResult()
     objc_desc.quantity, objc_desc.result = len(data_desc), data_desc
 
-    query_tags = select(Accolade).filter(Accolade.tags.like(f"%{text}%")).options(selectinload("*"))
+    query_tags = (
+        select(Accolade).filter(Accolade.tags.ilike(f"%{text}%")).options(selectinload("*"))
+    )
     result_tags = await db_async_session.execute(query_tags)
     data_tags = result_tags.scalars().fetchall()
     objc_tags = AccoladeSingleTypeSearchResult()
