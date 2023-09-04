@@ -28,9 +28,9 @@ The database is known as `tahrir`.
 (10 rows)
 ```
 
-More information about the relations can be found [here](https://gitlab.com/fedora/websites-apps/fedora-badges/accolades-api/-/blob/main/docs/TABLES.md).
+More information about the relations can be found [here](https://gitlab.com/fedora/websites-apps/fedora-badges/server/-/blob/main/docs/TABLES_TR.md?ref_type=heads).
 
-Related entity relationship diagram can be found [here](https://gitlab.com/fedora/websites-apps/fedora-badges/accolades-api/-/blob/main/docs/TRDIAG.md).
+Related entity relationship diagram can be found [here](https://gitlab.com/fedora/websites-apps/fedora-badges/server/-/blob/main/docs/TRDIAG.md?ref_type=heads).
 
 ## Experimentation
 
@@ -52,8 +52,8 @@ database environment. Unlike the aforementioned database environment, this has
 credentials available only for the read access. The credentials of the users
 are mentioned below.
 
-| # | Username            | Password           | Access |
-|---|---------------------|--------------------|--------|
+| # | Username                 | Password           | Access |
+|---|--------------------------|--------------------|--------|
 | 1 | `badges_server-readonly` | `l0v3f3d0r4b4d8e5` | R      |
 
 More information about the Developer Database Environment can be found [here](https://discussion.fedoraproject.org/t/fedora-badges-developer-database-environment-is-now-available/84168).

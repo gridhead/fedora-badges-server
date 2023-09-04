@@ -229,5 +229,5 @@ To run the `pre-commit` tool, follow these steps:
 
 ## Read more
 
-* [Tahrir Database](https://gitlab.com/fedora/websites-apps/fedora-badges/accolades-api/-/blob/main/docs/TAHRIR.md)
-* [Badges Database](https://gitlab.com/fedora/websites-apps/fedora-badges/accolades-api/-/blob/main/docs/BADGES.md)
+* [Tahrir Database](https://gitlab.com/fedora/websites-apps/fedora-badges/server/-/blob/main/docs/TAHRIR.md?ref_type=heads)
+* [Badges Database](https://gitlab.com/fedora/websites-apps/fedora-badges/server/-/blob/main/docs/BADGES.md?ref_type=heads)

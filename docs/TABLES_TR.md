@@ -340,6 +340,6 @@ database environment. Unlike the aforementioned database environment, this has
 credentials available only for the read access. The credentials of the users
 are mentioned below.
 
-| # | Username            | Password           | Access |
-|---|---------------------|--------------------|--------|
+| # | Username                 | Password           | Access |
+|---|--------------------------|--------------------|--------|
 | 1 | `badges_server-readonly` | `l0v3f3d0r4b4d8e5` | R      |
